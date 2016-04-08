@@ -2,8 +2,11 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,17 +18,20 @@ import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
+import com.tdt4240grp8.game.widgets.GoldWidget;
 
 public class PlayScreen implements Screen {
 
     private GeometryAssault game;
 
     private Player player1, player2;
-
     private Stage st;
-
     private OrthographicCamera gamecam;
     private Viewport gamePort;
+    private GoldWidget goldWidget;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private BitmapFont goldFont;
 
     public PlayScreen(GeometryAssault game) {
 
@@ -47,6 +53,16 @@ public class PlayScreen implements Screen {
         createButton(player2, "playbtn.png", 550, 50, st, Player.Fighters.TRIANGLE);
         createButton(player2, "playbtn.png", 650, 50, st, Player.Fighters.SQUARE);
         player1.addFighter(Player.Fighters.SQUARE);
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 35;
+        goldFont = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+
+        goldWidget = new GoldWidget(GeometryAssault.PLAYER_START_GOLD);
+
+
     }
 
     private Image createButton(final Player player, String texturePath, int x, int y, Stage st, final Player.Fighters fighter) {
@@ -108,7 +124,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
+       game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
         for (Fighter fighter : player1.getFighters()) {
@@ -117,6 +133,8 @@ public class PlayScreen implements Screen {
         for (Fighter fighter : player2.getFighters()) {
             game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
+        goldFont.setColor(Color.WHITE);
+        goldFont.draw(game.batch, "$ " + goldWidget.getGoldAmount(), 20, GeometryAssault.HEIGHT - 30);
         game.batch.end();
     }
 
