@@ -1,11 +1,12 @@
 package com.tdt4240grp8.game.widgets;
 
+import com.tdt4240grp8.game.sprites.Player;
+
 /**
  * Created by Shark on 08/04/16.
  */
-public class GoldWidget {
-
-    private int goldAmount;
+public class GoldWidget extends Observer {
+    private int gold;
 
     private void increaseAmount(int amount){
 
@@ -15,15 +16,18 @@ public class GoldWidget {
 
     }
 
-    public GoldWidget(int goldAmount) {
-        this.goldAmount = goldAmount;
+    public GoldWidget(Player player) {
+        this.player = player;
+        this.player.attach(this);
     }
 
-    public int getGoldAmount() {
-        return goldAmount;
+
+    public int getGold() {
+        return gold;
     }
 
-    public void setGoldAmount(int goldAmount) {
-        this.goldAmount = goldAmount;
+    @Override
+    public void update() {
+        this.gold = player.getGold();
     }
 }

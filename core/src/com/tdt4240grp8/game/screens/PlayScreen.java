@@ -19,6 +19,7 @@ import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.widgets.GoldWidget;
+import com.tdt4240grp8.game.widgets.HealthWidget;
 
 public class PlayScreen implements Screen {
 
@@ -28,20 +29,32 @@ public class PlayScreen implements Screen {
     private Stage st;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
-    private GoldWidget goldWidget;
+    private GoldWidget goldWidget1, goldWidget2;
+    private HealthWidget healthWidget1, healthWidget2;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private BitmapFont goldFont;
+    private BitmapFont font;
 
     public PlayScreen(GeometryAssault game) {
+
+        this.game = game;
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
-        this.game = game;
-        player1 = new Player(true);
-        player2 = new Player(false);
+        player1 = new Player(true, GeometryAssault.PLAYER_START_GOLD, GeometryAssault.PLAYER_START_HEALTHPOINT);
+        player2 = new Player(false, GeometryAssault.PLAYER_START_GOLD, GeometryAssault.PLAYER_START_HEALTHPOINT);
+
+        goldWidget1 = new GoldWidget(player1);
+        goldWidget2 = new GoldWidget(player2);
+        healthWidget1 = new HealthWidget(player1);
+        healthWidget2 = new HealthWidget(player2);
+
+        player1.notifyAllObservers();
+        player2.notifyAllObservers();
+
+
         st = new Stage();
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
@@ -52,16 +65,14 @@ public class PlayScreen implements Screen {
         createButton(player2, "playbtn.png", 450, 50, st, Player.Fighters.CIRCLE);
         createButton(player2, "playbtn.png", 550, 50, st, Player.Fighters.TRIANGLE);
         createButton(player2, "playbtn.png", 650, 50, st, Player.Fighters.SQUARE);
-        player1.addFighter(Player.Fighters.SQUARE);
+
+        createIcon("heart-icon.png", )
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 35;
-        goldFont = generator.generateFont(parameter); // font size 12 pixels
+        font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-
-        goldWidget = new GoldWidget(GeometryAssault.PLAYER_START_GOLD);
-
 
     }
 
@@ -74,6 +85,13 @@ public class PlayScreen implements Screen {
                 return true;
             }
         });
+        img.setPosition(x, y);
+        st.addActor(img);
+        return img;
+    }
+
+    private Image createIcon(String texturePath, int x, int y, Stage st){
+        Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.setPosition(x, y);
         st.addActor(img);
         return img;
@@ -95,7 +113,10 @@ public class PlayScreen implements Screen {
         for (Fighter fighter : player1.getFighters()) {
             fighter.update(delta);
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
-                game.setScreen(new VictoryScreen(game));
+                // losing hp
+                player2.decreaseHealth(10);
+                player1.removeFighter(fighter);
+//                game.setScreen(new VictoryScreen(game));
             }
             for (Fighter fighter2 : player2.getFighters()) {
                 if (collides(fighter.getBounds(), fighter2.getBounds())) {
@@ -107,7 +128,9 @@ public class PlayScreen implements Screen {
         for (Fighter fighter : player2.getFighters()) {
             fighter.update(delta);
             if (collides(fighter.getBounds(), player1.getCore().getBounds())) {
-                game.setScreen(new VictoryScreen(game));
+                player1.decreaseHealth(10);
+                player2.removeFighter(fighter);
+//                game.setScreen(new VictoryScreen(game));
             }
         }
 
@@ -124,7 +147,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
-       game.batch.begin();
+        game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
         for (Fighter fighter : player1.getFighters()) {
@@ -133,8 +156,15 @@ public class PlayScreen implements Screen {
         for (Fighter fighter : player2.getFighters()) {
             game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
-        goldFont.setColor(Color.WHITE);
-        goldFont.draw(game.batch, "$ " + goldWidget.getGoldAmount(), 20, GeometryAssault.HEIGHT - 30);
+
+        // Create goldwidget
+        font.setColor(Color.WHITE);
+        font.draw(game.batch, "$ " + goldWidget1.getGold(), 20, GeometryAssault.HEIGHT - 30);
+        font.draw(game.batch, "$ " + goldWidget2.getGold(), GeometryAssault.WIDTH -140, GeometryAssault.HEIGHT - 30);
+        font.draw(game.batch,  "HP: " + healthWidget1.getHealth(), 20 , GeometryAssault.HEIGHT - 70);
+        font.draw(game.batch, "HP: " + healthWidget2.getHealth(), GeometryAssault.WIDTH - 140, GeometryAssault.HEIGHT - 70);
+
+
         game.batch.end();
     }
 
