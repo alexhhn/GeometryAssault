@@ -5,16 +5,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.managers.TextureManager;
 
-public class Core {
+public class Core extends GameObject {
 
-    private Texture texture;
-
-    private Rectangle bounds;
-
-    private Vector2 position;
 
     public Core(int x, int y) {
         position = new Vector2(x, y);
+        velocity = new Vector2(0, 0);
         texture = TextureManager.getInstance().getTexture("bottomtube.png");
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
     }

@@ -16,6 +16,8 @@ import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 
+import java.util.ArrayList;
+
 public class PlayScreen implements Screen {
 
     private GeometryAssault game;
@@ -46,7 +48,6 @@ public class PlayScreen implements Screen {
         createButton(player2, "playbtn.png", 450, 50, st, Player.Fighters.CIRCLE);
         createButton(player2, "playbtn.png", 550, 50, st, Player.Fighters.TRIANGLE);
         createButton(player2, "playbtn.png", 650, 50, st, Player.Fighters.SQUARE);
-        player1.addFighter(Player.Fighters.SQUARE);
     }
 
     private Image createButton(final Player player, String texturePath, int x, int y, Stage st, final Player.Fighters fighter) {
@@ -76,25 +77,83 @@ public class PlayScreen implements Screen {
 
     public void update(float delta) {
         handleInput();
+        player1.update(delta);
+        player2.update(delta);
+        ArrayList<Fighter> waitingToMove = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
             fighter.update(delta);
+            boolean collided = false;
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
-                game.setScreen(new VictoryScreen(game));
+                collided = true;
+                if (fighter.attackOffCooldown()) {
+                    fighter.attack(player1);
+                    fighter.resetAttackCooldown();
+                }
             }
             for (Fighter fighter2 : player2.getFighters()) {
                 if (collides(fighter.getBounds(), fighter2.getBounds())) {
-                    player2.removeFighter(fighter2);
-                    player1.removeFighter(fighter);
+                    collided = true;
+                    if (fighter.attackOffCooldown()) {
+                        fighter.attack(fighter2);
+                        fighter.resetAttackCooldown();
+                    }
+                    break;
                 }
+            }
+            if (!collided) {
+                waitingToMove.add(fighter);
             }
         }
         for (Fighter fighter : player2.getFighters()) {
             fighter.update(delta);
+            boolean collided = false;
             if (collides(fighter.getBounds(), player1.getCore().getBounds())) {
-                game.setScreen(new VictoryScreen(game));
+                collided = true;
+                if (fighter.attackOffCooldown()) {
+                    fighter.attack(player2);
+                    fighter.resetAttackCooldown();
+                }
+
+            }
+            for (Fighter fighter1 : player1.getFighters()) {
+                if (collides(fighter.getBounds(), fighter1.getBounds())) {
+                    collided = true;
+                    if (fighter.attackOffCooldown()) {
+                        fighter.attack(fighter1);
+                        fighter.resetAttackCooldown();
+                    }
+                    break;
+                }
+            }
+            if (!collided) {
+                waitingToMove.add(fighter);
             }
         }
+        ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
+        for (Fighter fighter : player1.getFighters()) {
+            if (fighter.isDead()) {
+                markedForDeath.add(fighter);
+            }
+        }
+        for (Fighter fighter : markedForDeath) {
+            player1.removeFighter(fighter);
+        }
 
+        markedForDeath = new ArrayList<Fighter>();
+        for (Fighter fighter : player2.getFighters()) {
+            if (fighter.isDead()) {
+                markedForDeath.add(fighter);
+            }
+        }
+        if (player1.isDead() || player2.isDead()) {
+            game.setScreen(new VictoryScreen(game));
+        }
+        for (Fighter fighter : markedForDeath) {
+            player2.removeFighter(fighter);
+        }
+        for (Fighter fighter : waitingToMove) {
+            fighter.move(delta);
+        }
     }
 
     private boolean collides(Rectangle r1, Rectangle r2) {
