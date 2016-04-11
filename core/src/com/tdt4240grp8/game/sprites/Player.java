@@ -14,7 +14,7 @@ public class Player {
 
     private ArrayList<Fighter> fighters;
 
-    private ArrayList<PlayerListener> playerListeners = new ArrayList<PlayerListener>();
+    private ArrayList<PlayerListener> playerListeners;
 
     private Fighter fighterInProduction;
     private float currentProductionTime;
@@ -26,6 +26,7 @@ public class Player {
 
     public Player(boolean isGoingLeft) {
         fighters = new ArrayList<Fighter>();
+        playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
         core = new Core(isGoingLeft ? 0 : 750, 50);
         health = 20;
@@ -99,7 +100,9 @@ public class Player {
     public void removeHealth(int amount) {
         int oldValue = health;
         health -= amount;
+        System.out.println(playerListeners.size() + " " + playerListeners);
         for (PlayerListener playerListener : playerListeners) {
+            System.out.println("loop");
             playerListener.healthChanged(oldValue, health);
         }
     }
@@ -110,6 +113,7 @@ public class Player {
 
     public void addPlayerListener(PlayerListener playerListener) {
         playerListeners.add(playerListener);
+        System.out.println(playerListeners.size() + " " + playerListeners);
     }
 
     public void removePlayerListener(PlayerListener playerListener) {

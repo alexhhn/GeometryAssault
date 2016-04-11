@@ -61,12 +61,16 @@ public class PlayScreen implements Screen {
 
         goldWidget1 = new GoldWidget(player1);
         goldWidget2 = new GoldWidget(player2);
-        healthWidget1 = new HealthWidget(player1);
-        healthWidget2 = new HealthWidget(player2);
-
-
-
+        healthWidget1 = new HealthWidget();
+        healthWidget2 = new HealthWidget();
         st = new Stage();
+
+        st.addActor(healthWidget1);
+        //st.addActor(healthWidget2);
+
+        player1.addPlayerListener(healthWidget1);
+        //player2.addPlayerListener(healthWidget2);
+
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
         createButton(player1, "playbtn.png", 50, 50, st, Player.Fighters.SQUARE);
@@ -150,7 +154,7 @@ public class PlayScreen implements Screen {
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
                 collided = true;
                 if (fighter.attackOffCooldown()) {
-                    fighter.attack(player1);
+                    fighter.attack(player2);
                     fighter.resetAttackCooldown();
                 }
             }
@@ -174,7 +178,7 @@ public class PlayScreen implements Screen {
             if (collides(fighter.getBounds(), player1.getCore().getBounds())) {
                 collided = true;
                 if (fighter.attackOffCooldown()) {
-                    fighter.attack(player2);
+                    fighter.attack(player1);
                     fighter.resetAttackCooldown();
                 }
 
@@ -236,6 +240,7 @@ public class PlayScreen implements Screen {
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
+        healthWidget1.render(delta, game.batch);
         for (Fighter fighter : player1.getFighters()) {
             game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
