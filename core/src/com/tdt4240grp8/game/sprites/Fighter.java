@@ -6,17 +6,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Fighter extends GameObject {
 
-    private int health;
-    private int attackDamage;
-    private float attackCooldwn;
     private float currentAttackCooldown;
+
+    protected int health;
+    protected int attackDamage;
+    protected float attackCooldwn;
+    protected int goldValue;
 
     public Fighter(float x, float y, boolean isGoingLeft) {
         position = new Vector2(x, y);
-        velocity = new Vector2(isGoingLeft ? 50 : -50, 0);
-        health = 10;
-        attackDamage = 1;
-        attackCooldwn = 0.4f;
         currentAttackCooldown = 0;
     }
 
@@ -25,10 +23,6 @@ public class Fighter extends GameObject {
         if (currentAttackCooldown < 0) {
             currentAttackCooldown = 0;
         }
-    }
-
-    public float getCurrentAttackCooldown() {
-        return currentAttackCooldown;
     }
 
     public void move(float delta) {
@@ -63,6 +57,8 @@ public class Fighter extends GameObject {
     public int getHeath() {
         return health;
     }
+
+    public int getGoldValue() { return goldValue; }
 
     public Vector2 getPosition() {
         return position;

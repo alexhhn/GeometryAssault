@@ -18,10 +18,8 @@ public class TextureManager {
 
     public Texture getTexture(String path) {
         if (textures.get(path) == null) {
-            System.out.println("created " + path);
             textures.put(path, new Texture(path));
         } else {
-            System.out.println("retrieved " + path);
         }
         return textures.get(path);
     }

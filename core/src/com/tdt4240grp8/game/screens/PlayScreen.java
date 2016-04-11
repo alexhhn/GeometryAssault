@@ -136,6 +136,7 @@ public class PlayScreen implements Screen {
             }
         }
         for (Fighter fighter : markedForDeath) {
+            player2.addGold(fighter.getGoldValue());
             player1.removeFighter(fighter);
         }
 
@@ -145,14 +146,15 @@ public class PlayScreen implements Screen {
                 markedForDeath.add(fighter);
             }
         }
-        if (player1.isDead() || player2.isDead()) {
-            game.setScreen(new VictoryScreen(game));
-        }
         for (Fighter fighter : markedForDeath) {
+            player1.addGold(fighter.getGoldValue());
             player2.removeFighter(fighter);
         }
         for (Fighter fighter : waitingToMove) {
             fighter.move(delta);
+        }
+        if (player1.isDead() || player2.isDead()) {
+            game.setScreen(new VictoryScreen(game));
         }
     }
 
