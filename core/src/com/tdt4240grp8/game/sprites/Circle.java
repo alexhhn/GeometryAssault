@@ -6,7 +6,7 @@ import com.tdt4240grp8.game.managers.TextureManager;
 
 public class Circle extends Fighter {
 
-    public static final float PRODUCTION_TIME = 2.0f;
+    public static final float PRODUCTION_TIME = 1.0f;
     public static final int ATTACK_DAMAGE = 1;
     public static final float ATTACK_COOLDOWN = 0.4f;
     public static final int GOLD_VALUE = 10;
@@ -17,6 +17,7 @@ public class Circle extends Fighter {
         super(x, y, isGoingLeft);
         texture = TextureManager.getInstance().getTexture("circle.png");
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;
         goldValue = GOLD_VALUE;

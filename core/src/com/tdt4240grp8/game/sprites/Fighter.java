@@ -11,6 +11,7 @@ public class Fighter extends GameObject {
     protected int health;
     protected int attackDamage;
     protected float attackCooldwn;
+    protected float productionTime;
     protected int goldValue;
 
     public Fighter(float x, float y, boolean isGoingLeft) {

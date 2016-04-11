@@ -8,5 +8,4 @@ public interface PlayerListener {
     public void goldChanged(int oldValue, int newValue);
     public void fighterInProductionChanged(Fighter oldValue, Fighter newValue);
     public void currentProductionTimeChanged(float oldValue, float newValue);
-
 }

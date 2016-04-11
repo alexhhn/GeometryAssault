@@ -43,7 +43,7 @@ public class Player {
         for (PlayerListener playerListener : playerListeners) {
             playerListener.currentProductionTimeChanged(oldProductionTime, currentProductionTime);
         }
-        if (currentProductionTime > PRODUCTION_TIME) {
+        if (currentProductionTime > fighterInProduction.productionTime) {
             fighters.add(fighterInProduction);
             Fighter fighter = fighterInProduction;
             fighterInProduction = null;
