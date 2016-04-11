@@ -5,7 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
@@ -58,12 +61,8 @@ public class PlayScreen implements Screen {
         healthWidget1 = new HealthWidget(player1);
         healthWidget2 = new HealthWidget(player2);
 
-        progressBarStyle = new ProgressBar.ProgressBarStyle();
-        progressBar1 = new ProgressBar(10,100,10,false, progressBarStyle);
-
         player1.notifyAllObservers();
         player2.notifyAllObservers();
-
 
         st = new Stage();
         st.setViewport(gamePort);
@@ -90,6 +89,16 @@ public class PlayScreen implements Screen {
         healthFont = generator.generateFont(healthFontParameter);
 
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
+
+        // Create a progressbar
+        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
+        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
+        progressBarStyle = new ProgressBar.ProgressBarStyle();
+        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
+        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
+        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
+        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
+        st.addActor(progressBar1);
 
     }
 
@@ -181,8 +190,6 @@ public class PlayScreen implements Screen {
         goldFont.draw(game.batch, "$ " + goldWidget2.getGold(), GeometryAssault.WIDTH -140, GeometryAssault.HEIGHT - 30);
         healthFont.draw(game.batch,  "" + healthWidget1.getHealth(), 70 , GeometryAssault.HEIGHT - 70);
         healthFont.draw(game.batch, "" + healthWidget2.getHealth(), GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 70);
-//        progressBar1.draw(game.batch,1);
-//        st.addActor(progressBar1);
 
         game.batch.end();
     }
