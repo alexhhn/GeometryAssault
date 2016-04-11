@@ -35,13 +35,14 @@ public class PlayState extends State {
         core1 = new Core(50, 50);
         core2 = new Core(750, 50);
         bird = new Bird(50, 300);
+
         bg = TextureManager.getInstance().getTexture("bg.png");
         ground = TextureManager.getInstance().getTexture("ground.png");
+
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
         cam.setToOrtho(false, GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
-
         tubes = new Array<Tube>();
 
         for (int i = 1; i <= TUBE_COUNT; i++) {
