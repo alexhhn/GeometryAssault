@@ -3,11 +3,8 @@ package com.tdt4240grp8.game.sprites;
 import com.tdt4240grp8.game.observable.PlayerListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Player {
-
-    public static final float PRODUCTION_TIME = 2.0f;
 
     public enum Fighters {
         SQUARE, TRIANGLE, CIRCLE
@@ -43,7 +40,7 @@ public class Player {
         for (PlayerListener playerListener : playerListeners) {
             playerListener.currentProductionTimeChanged(oldProductionTime, currentProductionTime);
         }
-        if (currentProductionTime > PRODUCTION_TIME) {
+        if (currentProductionTime > fighterInProduction.productionTime) {
             fighters.add(fighterInProduction);
             Fighter fighter = fighterInProduction;
             fighterInProduction = null;
@@ -86,13 +83,6 @@ public class Player {
         return isGoingLeft;
     }
 
-    public ArrayList<GameObject> getPlayerGameObjects() {
-        ArrayList<GameObject> gameObjects = new ArrayList<GameObject>(Arrays.asList(core));
-        for (Fighter fighter : fighters) {
-            gameObjects.add(fighter);
-        }
-        return gameObjects;
-    }
 
     public Core getCore() {
         return core;
@@ -124,6 +114,14 @@ public class Player {
 
     public void removePlayerListener(PlayerListener playerListener) {
         playerListeners.remove(playerListener);
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getHealth() {
+        return health;
     }
 
 }

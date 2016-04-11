@@ -17,6 +17,7 @@ public class Triangle extends Fighter {
         super(x, y, isGoingLeft);
         texture = TextureManager.getInstance().getTexture("triangle.png");
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;
         goldValue = GOLD_VALUE;
