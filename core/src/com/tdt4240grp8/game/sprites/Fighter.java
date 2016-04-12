@@ -72,6 +72,4 @@ public class Fighter extends GameObject {
     public Rectangle getBounds() {
         return bounds;
     }
-
-
 }

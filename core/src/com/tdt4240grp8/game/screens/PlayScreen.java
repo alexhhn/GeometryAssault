@@ -2,14 +2,15 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,6 +24,7 @@ import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.widgets.GoldWidget;
+import com.tdt4240grp8.game.widgets.HealthBar;
 import com.tdt4240grp8.game.widgets.HealthWidget;
 
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class PlayScreen implements Screen {
     private ProgressBar progressBar1;
     private ProgressBar.ProgressBarStyle progressBarStyle;
 
+    private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
+
     public PlayScreen(GeometryAssault game) {
 
         this.game = game;
@@ -57,7 +61,6 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
-
 
         goldWidget1 = new GoldWidget(player1);
         goldWidget2 = new GoldWidget(player2);
@@ -73,13 +76,13 @@ public class PlayScreen implements Screen {
 
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
-        createButton(player1, "playbtn.png", 50, 50, st, Player.Fighters.SQUARE);
-        createButton(player1, "playbtn.png", 150, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player1, "playbtn.png", 250, 50, st, Player.Fighters.CIRCLE);
+        createButton(player1, "playbtn.png", 50, 50, Player.Fighters.SQUARE);
+        createButton(player1, "playbtn.png", 150, 50, Player.Fighters.TRIANGLE);
+        createButton(player1, "playbtn.png", 250, 50, Player.Fighters.CIRCLE);
 
-        createButton(player2, "playbtn.png", 450, 50, st, Player.Fighters.CIRCLE);
-        createButton(player2, "playbtn.png", 550, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player2, "playbtn.png", 650, 50, st, Player.Fighters.SQUARE);
+        createButton(player2, "playbtn.png", 450, 50, Player.Fighters.CIRCLE);
+        createButton(player2, "playbtn.png", 550, 50, Player.Fighters.TRIANGLE);
+        createButton(player2, "playbtn.png", 650, 50, Player.Fighters.SQUARE);
 
 
         createIcon("heart-icon.png", 20 , GeometryAssault.HEIGHT - 100, st);
@@ -106,17 +109,21 @@ public class PlayScreen implements Screen {
         progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
         progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
         st.addActor(progressBar1);
-
-
     }
 
-    private Image createButton(final Player player, String texturePath, int x, int y, Stage st, final Player.Fighters fighter) {
+    private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                player.addFighter(fighter);
-                return true;
+                Fighter createdFighter = player.addFighter(fighter);
+                if (createdFighter != null) {
+                    HealthBar healthBar = new HealthBar(0f, 1f, 0.1f, false, createdFighter);
+                    healthBars.add(healthBar);
+                    st.addActor(healthBar);
+                    return true;
+                }
+                return false;
             }
         });
         img.setPosition(x, y);
@@ -220,6 +227,15 @@ public class PlayScreen implements Screen {
         }
         for (Fighter fighter : waitingToMove) {
             fighter.move(delta);
+        }
+        for (int i = healthBars.size() - 1; i >= 0; i--) {
+            HealthBar healthBar = healthBars.get(i);
+            healthBar.setPosition(healthBar.getFighter().getPosition().x, healthBar.getFighter().getPosition().y + 100);
+            healthBar.setValue(healthBar.getFighter().getHeath() / 10.0f);
+            if (healthBar.getValue() == 0f) {
+                healthBars.remove(healthBar);
+                healthBar.remove();
+            }
         }
         if (player1.isDead() || player2.isDead()) {
             game.setScreen(new VictoryScreen(game));

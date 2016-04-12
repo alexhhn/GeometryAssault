@@ -52,9 +52,9 @@ public class Player {
         }
     }
 
-    public void addFighter(Fighters fighterType) {
+    public Fighter addFighter(Fighters fighterType) {
         if (fighterInProduction != null) {
-            return;
+            return null;
         }
         switch (fighterType) {
             case SQUARE:
@@ -70,6 +70,7 @@ public class Player {
         for (PlayerListener playerListener : playerListeners) {
             playerListener.fighterInProductionChanged(null, fighterInProduction);
         }
+        return fighterInProduction;
     }
 
     public void removeFighter(Fighter fighter) {
