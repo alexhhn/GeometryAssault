@@ -22,6 +22,7 @@ import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
+import com.tdt4240grp8.game.sprites.Square;
 import com.tdt4240grp8.game.widgets.GoldWidget;
 import com.tdt4240grp8.game.widgets.HealthWidget;
 
@@ -237,15 +238,34 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
+
+
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
         healthWidget1.render(delta, game.batch);
         for (Fighter fighter : player1.getFighters()) {
-            game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
+            if (fighter instanceof Square){
+                ((Square) fighter).getAnimation().updateStateTime(delta);
+                ((Square) fighter).getAnimation().updateCurrentFrame();
+                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+
+            }
+            else{
+                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
+            }
+
         }
         for (Fighter fighter : player2.getFighters()) {
-            game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
+            if (fighter instanceof Square){
+                ((Square) fighter).getAnimation().updateStateTime(delta);
+                ((Square) fighter).getAnimation().updateCurrentFrame();
+                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+
+            }
+            else{
+                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
+            }
         }
 
         // Create goldwidget

@@ -2,6 +2,8 @@ package com.tdt4240grp8.game.sprites;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tdt4240grp8.game.animation.*;
+import com.tdt4240grp8.game.animation.Animation;
 import com.tdt4240grp8.game.managers.TextureManager;
 
 public class Square extends Fighter {
@@ -15,14 +17,19 @@ public class Square extends Fighter {
 
     public Square(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-        texture = TextureManager.getInstance().getTexture("square.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        texture = TextureManager.getInstance().getTexture("sprite-animation2.png");
+        animation = new Animation(texture);
+        bounds = new Rectangle(x, y, animation.getWidth(), animation.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;
         goldValue = GOLD_VALUE;
         health = MAX_HEALTH;
         velocity = new Vector2(isGoingLeft ? MOVEMENT_SPEED : -MOVEMENT_SPEED, 0);
+    }
+
+    public Animation getAnimation(){
+        return animation;
     }
 
 }
