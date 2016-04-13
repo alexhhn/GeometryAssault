@@ -8,8 +8,8 @@ import com.tdt4240grp8.game.states.GameStateManager;
 
 public class GeometryAssault extends Game {
 
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 480;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	public static final int PLAYER_START_GOLD = 2000;
 	public static final int PLAYER_START_HEALTHPOINT = 20;
 

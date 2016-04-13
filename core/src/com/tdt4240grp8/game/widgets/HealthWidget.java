@@ -25,12 +25,17 @@ public class HealthWidget extends Actor implements PlayerListener {
     private FreeTypeFontGenerator.FreeTypeFontParameter healthFontParameter;
 
     private BitmapFont healthFont;
+    private  Image img;
 
-    public HealthWidget() {
+    private int xOffset;
+    private int xPos, yPos;
+
+    public HealthWidget(int xPos, int yPos, int xOffset){
+        this.xOffset = xOffset;
         health = 20;
-        Image img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
-        img.setSize(40,34);
-        img.setPosition(0, 0);
+        img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
+        img.setScale(.6f);
+        img.setPosition(xPos, yPos);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
 
         healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -40,13 +45,17 @@ public class HealthWidget extends Actor implements PlayerListener {
 
     }
 
+    public Image getImg() {
+        return img;
+    }
+
     public void render(float delta, SpriteBatch batch) {
-        healthFont.draw(batch,  "" + health, 70 , GeometryAssault.HEIGHT - 70);
+        healthFont.draw(batch,  "" + health, img.getX() + xOffset , GeometryAssault.HEIGHT - 70);
+//        System.out.println(img.getX() + " "+ img.getWidth()/2 +" "+  xOffset);
     }
 
     @Override
     public void healthChanged(int oldValue, int newValue) {
-        System.out.println("hei");
         health = newValue;
     }
 
