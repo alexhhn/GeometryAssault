@@ -101,9 +101,7 @@ public class Player {
     public void removeHealth(int amount) {
         int oldValue = health;
         health -= amount;
-        System.out.println(playerListeners.size() + " " + playerListeners);
         for (PlayerListener playerListener : playerListeners) {
-            System.out.println("loop");
             playerListener.healthChanged(oldValue, health);
         }
     }
@@ -114,7 +112,6 @@ public class Player {
 
     public void addPlayerListener(PlayerListener playerListener) {
         playerListeners.add(playerListener);
-        System.out.println(playerListeners.size() + " " + playerListeners);
     }
 
     public void removePlayerListener(PlayerListener playerListener) {
