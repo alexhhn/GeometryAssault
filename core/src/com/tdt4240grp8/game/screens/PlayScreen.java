@@ -146,7 +146,6 @@ public class PlayScreen implements Screen {
 
     public void handleInput() {
         if (Gdx.input.justTouched()) {
-            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
         }
     }
 
@@ -211,7 +210,7 @@ public class PlayScreen implements Screen {
             }
         }
         for (Fighter fighter : markedForDeath) {
-            player2.addGold(fighter.getGoldValue());
+            player2.addGold(fighter.getGoldValue()*game.gameModeState.getGoldMultiplier());
             player1.removeFighter(fighter);
         }
 
@@ -222,11 +221,11 @@ public class PlayScreen implements Screen {
             }
         }
         for (Fighter fighter : markedForDeath) {
-            player1.addGold(fighter.getGoldValue());
+            player1.addGold(fighter.getGoldValue()*game.gameModeState.getGoldMultiplier());
             player2.removeFighter(fighter);
         }
         for (Fighter fighter : waitingToMove) {
-            fighter.move(delta);
+            fighter.move(delta*game.gameModeState.getSpeedMultiplier());
         }
         for (int i = healthBars.size() - 1; i >= 0; i--) {
             HealthBar healthBar = healthBars.get(i);
