@@ -42,10 +42,8 @@ public class PlayScreen implements Screen {
     private HealthWidget healthWidget1, healthWidget2;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter goldFontParameter;
-    private FreeTypeFontGenerator.FreeTypeFontParameter healthFontParameter;
 
     private BitmapFont goldFont;
-    private BitmapFont healthFont;
 
     private ProgressBar progressBar1;
     private ProgressBar.ProgressBarStyle progressBarStyle;
@@ -63,53 +61,52 @@ public class PlayScreen implements Screen {
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
-        goldWidget1 = new GoldWidget(player1);
-        goldWidget2 = new GoldWidget(player2);
-        healthWidget1 = new HealthWidget();
-        healthWidget2 = new HealthWidget();
+        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, .6f);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
+        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
+        
+
         st = new Stage();
+        st.addActor(goldWidget1.getImg());
+        st.addActor(goldWidget2.getImg());
+        st.addActor(healthWidget1.getImg());
+        st.addActor(healthWidget2.getImg());
 
-        st.addActor(healthWidget1);
-        //st.addActor(healthWidget2);
-
+        player1.addPlayerListener(goldWidget1);
+        player2.addPlayerListener(goldWidget2);
         player1.addPlayerListener(healthWidget1);
-        //player2.addPlayerListener(healthWidget2);
+        player2.addPlayerListener(healthWidget2);
 
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
-        createButton(player1, "playbtn.png", 50, 50, Player.Fighters.SQUARE);
-        createButton(player1, "playbtn.png", 150, 50, Player.Fighters.TRIANGLE);
-        createButton(player1, "playbtn.png", 250, 50, Player.Fighters.CIRCLE);
 
-        createButton(player2, "playbtn.png", 450, 50, Player.Fighters.CIRCLE);
-        createButton(player2, "playbtn.png", 550, 50, Player.Fighters.TRIANGLE);
-        createButton(player2, "playbtn.png", 650, 50, Player.Fighters.SQUARE);
+        createButton(player1, "circle-button.png", 50, 10, Player.Fighters.SQUARE);
+        createButton(player1, "circle-button.png", 200, 10, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", 350, 10, Player.Fighters.CIRCLE);
 
-
-        createIcon("heart-icon.png", 20 , GeometryAssault.HEIGHT - 100, st);
-        createIcon("heart-icon.png",GeometryAssault.WIDTH - 65, GeometryAssault.HEIGHT - 100, st);
-
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -500, 10, Player.Fighters.CIRCLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -350, 10, Player.Fighters.TRIANGLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -200, 10, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         goldFontParameter.size = 35;
         goldFont = generator.generateFont(goldFontParameter); // goldFont size 12 pixels
-
-        healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        healthFontParameter.size = 25;
-        healthFont = generator.generateFont(healthFontParameter);
-
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
         // Create a progressbar
-        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
-        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
-        progressBarStyle = new ProgressBar.ProgressBarStyle();
-        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
-        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
-        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
-        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
-        st.addActor(progressBar1);
+//        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
+//        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
+//        progressBarStyle = new ProgressBar.ProgressBarStyle();
+//        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
+//        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
+//        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
+//        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
+//        st.addActor(progressBar1);
+
+        // Create bg
+
     }
 
     private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
@@ -121,6 +118,7 @@ public class PlayScreen implements Screen {
                 if (createdFighter != null) {
                     HealthBar healthBar = new HealthBar(0f, 1f, 0.1f, false, createdFighter);
                     healthBars.add(healthBar);
+                    player.addGold(-100);
                     st.addActor(healthBar);
                     return true;
                 }
@@ -132,11 +130,10 @@ public class PlayScreen implements Screen {
         return img;
     }
 
-    private Image createIcon(String texturePath, int x, int y, Stage st){
+    private Image createBg(String texturePath, int x, int y, Stage st){
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-        img.setSize(40,34);
+        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
-        st.addActor(img);
         return img;
     }
 
@@ -251,13 +248,20 @@ public class PlayScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         st.draw();
+
         game.batch.setProjectionMatrix(gamecam.combined);
 
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
+
+        goldWidget1.render(delta,game.batch);
+        goldWidget2.render(delta,game.batch);
         healthWidget1.render(delta, game.batch);
+        healthWidget2.render(delta, game.batch);
+
         for (Fighter fighter : player1.getFighters()) {
             if (fighter instanceof Square){
                 ((Square) fighter).getAnimation().update(delta);
@@ -279,13 +283,6 @@ public class PlayScreen implements Screen {
                 game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
             }
         }
-
-        // Create goldwidget
-//        goldFont.setColor(Color.WHITE);
-//        goldFont.draw(game.batch, "$ " + goldWidget1.getGold(), 20, GeometryAssault.HEIGHT - 30);
-//        goldFont.draw(game.batch, "$ " + goldWidget2.getGold(), GeometryAssault.WIDTH -140, GeometryAssault.HEIGHT - 30);
-//        healthFont.draw(game.batch,  "" + healthWidget1.getHealth(), 70 , GeometryAssault.HEIGHT - 70);
-//        healthFont.draw(game.batch, "" + healthWidget2.getHealth(), GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 70);
 
         game.batch.end();
     }
