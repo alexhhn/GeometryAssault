@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.tools.javac.code.Attribute;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
@@ -60,6 +61,7 @@ public class PlayScreen implements Screen {
         goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
         healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
         healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
+        
 
         st = new Stage();
         st.addActor(goldWidget1.getImg());
@@ -74,13 +76,13 @@ public class PlayScreen implements Screen {
 
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
-        createButton(player1, "playbtn.png", 150, 50, st, Player.Fighters.SQUARE);
-        createButton(player1, "playbtn.png", 250, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player1, "playbtn.png", 350, 50, st, Player.Fighters.CIRCLE);
+        createButton(player1, "circle-button.png", 50, 10, st, Player.Fighters.SQUARE);
+        createButton(player1, "circle-button.png", 200, 10, st, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", 350, 10, st, Player.Fighters.CIRCLE);
 
-        createButton(player2, "playbtn.png", 830, 50, st, Player.Fighters.CIRCLE);
-        createButton(player2, "playbtn.png", 930, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player2, "playbtn.png", 1030, 50, st, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -500, 10, st, Player.Fighters.CIRCLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -350, 10, st, Player.Fighters.TRIANGLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -200, 10, st, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
