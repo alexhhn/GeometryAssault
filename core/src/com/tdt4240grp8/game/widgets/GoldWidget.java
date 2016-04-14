@@ -66,7 +66,7 @@ public class GoldWidget extends Actor implements PlayerListener {
     }
 
     @Override
-    public void currentProductionTimeChanged(float oldValue, float newValue) {
+    public void currentProductionTimeChanged(float oldValue, float newValue, float totalValue) {
 
     }
 }

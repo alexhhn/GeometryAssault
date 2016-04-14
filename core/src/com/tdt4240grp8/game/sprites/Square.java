@@ -1,9 +1,8 @@
 package com.tdt4240grp8.game.sprites;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.tdt4240grp8.game.animation.*;
-import com.tdt4240grp8.game.animation.Animation;
 import com.tdt4240grp8.game.managers.TextureManager;
 
 public class Square extends Fighter {
@@ -17,9 +16,9 @@ public class Square extends Fighter {
 
     public Square(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-        texture = TextureManager.getInstance().getTexture("sprite-animation2.png");
-        animation = new Animation(texture,6,5);
-        bounds = new Rectangle(x, y, animation.getWidth(), animation.getHeight());
+        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("sprite-animation2.png"));
+        animation = new Animation(textureRegion, 6, 3);
+        bounds = new Rectangle(x, y, animation.getFrame().getRegionWidth(), animation.getFrame().getRegionHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;
@@ -31,10 +30,6 @@ public class Square extends Fighter {
     @Override
     public int getMaxHealth() {
         return MAX_HEALTH;
-    }
-
-    public Animation getAnimation(){
-        return animation;
     }
 
 }

@@ -67,5 +67,5 @@ public class HealthWidget extends Actor implements PlayerListener {
     public void fighterInProductionChanged(Fighter oldValue, Fighter newValue) {}
 
     @Override
-    public void currentProductionTimeChanged(float oldValue, float newValue) {}
+    public void currentProductionTimeChanged(float oldValue, float newValue, float totalValue) {}
 }

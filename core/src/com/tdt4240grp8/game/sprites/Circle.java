@@ -1,5 +1,6 @@
 package com.tdt4240grp8.game.sprites;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.managers.TextureManager;
@@ -15,8 +16,9 @@ public class Circle extends Fighter {
 
     public Circle(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-        texture = TextureManager.getInstance().getTexture("circle.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("circle.png"));
+        animation = new Animation(textureRegion, 1, 3);
+        bounds = new Rectangle(x, y, animation.getFrame().getRegionWidth(), animation.getFrame().getRegionHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;

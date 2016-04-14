@@ -1,6 +1,7 @@
 package com.tdt4240grp8.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.observable.FighterListener;
@@ -17,6 +18,8 @@ public abstract class Fighter extends GameObject {
     protected float attackCooldwn;
     protected float productionTime;
     protected int goldValue;
+    protected TextureRegion textureRegion;
+    protected Animation animation;
 
     protected ArrayList<FighterListener> fighterListeners;
 
@@ -96,5 +99,9 @@ public abstract class Fighter extends GameObject {
 
     public void removeFighterListener(FighterListener fighterListener) {
         fighterListeners.remove(fighterListener);
+    }
+
+    public Animation getAnimation() {
+        return animation;
     }
 }

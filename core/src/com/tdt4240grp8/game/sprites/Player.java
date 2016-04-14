@@ -41,7 +41,7 @@ public class Player {
         float oldProductionTime = currentProductionTime;
         currentProductionTime += delta;
         for (PlayerListener playerListener : playerListeners) {
-            playerListener.currentProductionTimeChanged(oldProductionTime, currentProductionTime);
+            playerListener.currentProductionTimeChanged(oldProductionTime, currentProductionTime, fighterInProduction.productionTime);
         }
         if (currentProductionTime > fighterInProduction.productionTime) {
             fighters.add(fighterInProduction);

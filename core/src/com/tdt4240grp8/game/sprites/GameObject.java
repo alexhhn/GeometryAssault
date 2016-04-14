@@ -8,7 +8,6 @@ import com.tdt4240grp8.game.animation.*;
 public class GameObject {
 
     protected Texture texture;
-    protected com.tdt4240grp8.game.animation.Animation animation;
     protected Rectangle bounds;
 
     protected Vector2 position;

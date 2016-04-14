@@ -4,13 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,6 +19,7 @@ import com.tdt4240grp8.game.sprites.Square;
 import com.tdt4240grp8.game.widgets.GoldWidget;
 import com.tdt4240grp8.game.widgets.HealthBar;
 import com.tdt4240grp8.game.widgets.HealthWidget;
+import com.tdt4240grp8.game.widgets.ProductionPreview;
 
 import java.util.ArrayList;
 
@@ -35,14 +33,7 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private GoldWidget goldWidget1, goldWidget2;
     private HealthWidget healthWidget1, healthWidget2;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter goldFontParameter;
-
-    private BitmapFont goldFont;
-
-    private ProgressBar progressBar1;
-    private ProgressBar.ProgressBarStyle progressBarStyle;
-
+    private ProductionPreview productionPreview1, productionPreview2;
 
     public PlayScreen(GeometryAssault game) {
 
@@ -55,25 +46,32 @@ public class PlayScreen implements Screen {
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
+        st = new Stage();
+        st.setViewport(gamePort);
+        Gdx.input.setInputProcessor(st);
+
         goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, .6f);
         goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
         healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
         healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
-        
+        productionPreview1 = new ProductionPreview(250, GeometryAssault.HEIGHT - 75, 150, 0, 1, 0.01f, false, st);
+        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 350, GeometryAssault.HEIGHT - 75, -80, 0, 1, 0.01f, false, st);
 
-        st = new Stage();
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
         st.addActor(healthWidget1.getImg());
         st.addActor(healthWidget2.getImg());
+        st.addActor(productionPreview1);
+        st.addActor(productionPreview1.getImg());
+        st.addActor(productionPreview2);
+        st.addActor(productionPreview2.getImg());
 
         player1.addPlayerListener(goldWidget1);
         player2.addPlayerListener(goldWidget2);
         player1.addPlayerListener(healthWidget1);
         player2.addPlayerListener(healthWidget2);
-
-        st.setViewport(gamePort);
-        Gdx.input.setInputProcessor(st);
+        player1.addPlayerListener(productionPreview1);
+        player2.addPlayerListener(productionPreview2);
 
         createButton(player1, "circle-button.png", 50, 10, Player.Fighters.SQUARE);
         createButton(player1, "circle-button.png", 200, 10, Player.Fighters.TRIANGLE);
@@ -82,25 +80,6 @@ public class PlayScreen implements Screen {
         createButton(player2, "circle-button.png", GeometryAssault.WIDTH -500, 10, Player.Fighters.CIRCLE);
         createButton(player2, "circle-button.png", GeometryAssault.WIDTH -350, 10, Player.Fighters.TRIANGLE);
         createButton(player2, "circle-button.png", GeometryAssault.WIDTH -200, 10, Player.Fighters.SQUARE);
-
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
-        goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        goldFontParameter.size = 35;
-        goldFont = generator.generateFont(goldFontParameter); // goldFont size 12 pixels
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
-
-        // Create a progressbar
-//        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
-//        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
-//        progressBarStyle = new ProgressBar.ProgressBarStyle();
-//        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
-//        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
-//        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
-//        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
-//        st.addActor(progressBar1);
-
-        // Create bg
-
     }
 
     private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
@@ -248,25 +227,12 @@ public class PlayScreen implements Screen {
         healthWidget2.render(delta, game.batch);
 
         for (Fighter fighter : player1.getFighters()) {
-            if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().update(delta);
-                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
-
-            }
-            else{
-                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
-            }
-
+            fighter.getAnimation().update(delta);
+            game.batch.draw(fighter.getAnimation().getFrame(),fighter.getPosition().x,fighter.getPosition().y);
         }
         for (Fighter fighter : player2.getFighters()) {
-            if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().update(delta);
-                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
-
-            }
-            else{
-                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
-            }
+            fighter.getAnimation().update(delta);
+            game.batch.draw(fighter.getAnimation().getFrame(),fighter.getPosition().x,fighter.getPosition().y);
         }
 
         game.batch.end();
