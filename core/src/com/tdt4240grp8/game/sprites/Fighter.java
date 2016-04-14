@@ -3,6 +3,10 @@ package com.tdt4240grp8.game.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tdt4240grp8.game.observable.FighterListener;
+import com.tdt4240grp8.game.observable.PlayerListener;
+
+import java.util.ArrayList;
 
 public abstract class Fighter extends GameObject {
 
@@ -14,7 +18,10 @@ public abstract class Fighter extends GameObject {
     protected float productionTime;
     protected int goldValue;
 
+    protected ArrayList<FighterListener> fighterListeners;
+
     public Fighter(float x, float y, boolean isGoingLeft) {
+        fighterListeners = new ArrayList<FighterListener>();
         position = new Vector2(x, y);
         currentAttackCooldown = 0;
     }
@@ -29,8 +36,12 @@ public abstract class Fighter extends GameObject {
     public abstract int getMaxHealth();
 
     public void move(float delta) {
+        Vector2 oldValue = position;
         position.x += velocity.x * delta;
         bounds.x += velocity.x * delta;
+        for (FighterListener fighterListener : fighterListeners) {
+            fighterListener.positionChanged(oldValue, position);
+        }
     }
 
     public boolean attackOffCooldown() {
@@ -50,7 +61,11 @@ public abstract class Fighter extends GameObject {
     }
 
     public void removeHealth(int amount) {
+        int oldValue = health;
         health -= amount;
+        for (FighterListener fighterListener : fighterListeners) {
+            fighterListener.healthChanged(oldValue, health, getMaxHealth());
+        }
     }
 
     public boolean isDead() {
@@ -73,5 +88,13 @@ public abstract class Fighter extends GameObject {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public void addFighterListener(FighterListener fighterListener) {
+        fighterListeners.add(fighterListener);
+    }
+
+    public void removeFighterListener(FighterListener fighterListener) {
+        fighterListeners.remove(fighterListener);
     }
 }

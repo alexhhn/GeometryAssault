@@ -4,19 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
@@ -48,7 +43,6 @@ public class PlayScreen implements Screen {
     private ProgressBar progressBar1;
     private ProgressBar.ProgressBarStyle progressBarStyle;
 
-    private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
 
     public PlayScreen(GeometryAssault game) {
 
@@ -116,8 +110,8 @@ public class PlayScreen implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Fighter createdFighter = player.addFighter(fighter);
                 if (createdFighter != null) {
-                    HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false, createdFighter);
-                    healthBars.add(healthBar);
+                    HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
+                    createdFighter.addFighterListener(healthBar);
                     player.addGold(-100);
                     st.addActor(healthBar);
                     return true;
@@ -224,15 +218,6 @@ public class PlayScreen implements Screen {
         }
         for (Fighter fighter : waitingToMove) {
             fighter.move(delta*game.gameModeState.getSpeedMultiplier());
-        }
-        for (int i = healthBars.size() - 1; i >= 0; i--) {
-            HealthBar healthBar = healthBars.get(i);
-            healthBar.setPosition(healthBar.getFighter().getPosition().x, healthBar.getFighter().getPosition().y + 100);
-            healthBar.setValue((float) healthBar.getFighter().getHeath() / (float) healthBar.getFighter().getMaxHealth());
-            if (healthBar.getValue() == 0f) {
-                healthBars.remove(healthBar);
-                healthBar.remove();
-            }
         }
         if (player1.isDead() || player2.isDead()) {
             game.setScreen(new VictoryScreen(game));
