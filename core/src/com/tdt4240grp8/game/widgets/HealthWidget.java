@@ -30,16 +30,17 @@ public class HealthWidget extends Actor implements PlayerListener {
     private int xOffset;
     private int xPos, yPos;
 
-    public HealthWidget(int xPos, int yPos, int xOffset){
+    public HealthWidget(int xPos, int yPos, int xOffset, float scaleValue){
         this.xOffset = xOffset;
-        health = 20;
+        health = GeometryAssault.PLAYER_START_HEALTHPOINT;
+
         img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
-        img.setScale(.6f);
+        img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
 
         healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        healthFontParameter.size = 25;
+        healthFontParameter.size = 30;
         healthFont = generator.generateFont(healthFontParameter);
         healthFont.setColor(Color.WHITE);
 
@@ -50,7 +51,7 @@ public class HealthWidget extends Actor implements PlayerListener {
     }
 
     public void render(float delta, SpriteBatch batch) {
-        healthFont.draw(batch,  "" + health, img.getX() + xOffset , GeometryAssault.HEIGHT - 70);
+        healthFont.draw(batch,  "" + health, img.getX() + xOffset , GeometryAssault.HEIGHT - 135);
 //        System.out.println(img.getX() + " "+ img.getWidth()/2 +" "+  xOffset);
     }
 

@@ -49,7 +49,6 @@ public class PlayScreen implements Screen {
 
         this.game = game;
 
-
         player1 = new Player(true);
         player2 = new Player(false);
 
@@ -57,33 +56,31 @@ public class PlayScreen implements Screen {
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
-
-        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 50, 50);
-        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 60, GeometryAssault.HEIGHT - 50, -50);
-        healthWidget1 = new HealthWidget(20,GeometryAssault.HEIGHT - 100, 50);
-        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 60, GeometryAssault.HEIGHT - 100, -40);
+        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, .6f);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
+        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
 
         st = new Stage();
-        st.addActor(createBg("gameBG.jpg",0,0,st));
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
         st.addActor(healthWidget1.getImg());
         st.addActor(healthWidget2.getImg());
 
         player1.addPlayerListener(goldWidget1);
-        player2.addPlayerListener(goldWidget1);
+        player2.addPlayerListener(goldWidget2);
         player1.addPlayerListener(healthWidget1);
         player2.addPlayerListener(healthWidget2);
 
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
-        createButton(player1, "playbtn.png", 50, 50, st, Player.Fighters.SQUARE);
-        createButton(player1, "playbtn.png", 150, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player1, "playbtn.png", 250, 50, st, Player.Fighters.CIRCLE);
+        createButton(player1, "playbtn.png", 150, 50, st, Player.Fighters.SQUARE);
+        createButton(player1, "playbtn.png", 250, 50, st, Player.Fighters.TRIANGLE);
+        createButton(player1, "playbtn.png", 350, 50, st, Player.Fighters.CIRCLE);
 
-        createButton(player2, "playbtn.png", 450, 50, st, Player.Fighters.CIRCLE);
-        createButton(player2, "playbtn.png", 550, 50, st, Player.Fighters.TRIANGLE);
-        createButton(player2, "playbtn.png", 650, 50, st, Player.Fighters.SQUARE);
+        createButton(player2, "playbtn.png", 830, 50, st, Player.Fighters.CIRCLE);
+        createButton(player2, "playbtn.png", 930, 50, st, Player.Fighters.TRIANGLE);
+        createButton(player2, "playbtn.png", 1030, 50, st, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -92,18 +89,16 @@ public class PlayScreen implements Screen {
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
         // Create a progressbar
-        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
-        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
-        progressBarStyle = new ProgressBar.ProgressBarStyle();
-        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
-        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
-        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
-        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
-        st.addActor(progressBar1);
+//        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
+//        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
+//        progressBarStyle = new ProgressBar.ProgressBarStyle();
+//        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
+//        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
+//        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
+//        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
+//        st.addActor(progressBar1);
 
         // Create bg
-
-
 
     }
 
@@ -113,7 +108,7 @@ public class PlayScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 player.addFighter(fighter);
-                // reduce money here
+                player.addGold(-100);
                 return true;
             }
         });

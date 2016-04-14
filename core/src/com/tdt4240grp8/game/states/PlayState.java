@@ -32,8 +32,8 @@ public class PlayState extends State {
     protected PlayState(GameStateManager gsm) {
         super(gsm);
         button = new Button();
-        core1 = new Core(50, 50);
-        core2 = new Core(750, 50);
+        core1 = new Core(50, 200);
+        core2 = new Core(GeometryAssault.WIDTH - 100, 200);
         bird = new Bird(50, 300);
 
         bg = TextureManager.getInstance().getTexture("bg.png");
@@ -86,8 +86,8 @@ public class PlayState extends State {
         }
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
-        sb.draw(core1.getTexture(), core1.getPosition().x, core1.getPosition().y);
-        sb.draw(core2.getTexture(), core2.getPosition().x, core2.getPosition().y);
+        sb.draw(core1.getTexture(), 100, 100);
+        sb.draw(core2.getTexture(), GeometryAssault.WIDTH - 100, 100);
         sb.end();
     }
 
