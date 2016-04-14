@@ -1,6 +1,8 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sounds.SoundManager;
+import com.tdt4240grp8.game.sprites.Circle;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.sprites.Square;
@@ -31,7 +34,7 @@ import com.tdt4240grp8.game.widgets.HealthWidget;
 
 import java.util.ArrayList;
 
-public class PlayScreen implements Screen {
+public class PlayScreen implements Screen{
 
     private GeometryAssault game;
 
@@ -51,12 +54,25 @@ public class PlayScreen implements Screen {
     private ProgressBar progressBar1;
     private ProgressBar.ProgressBarStyle progressBarStyle;
 
+    public State state = State.RUN;
+
+    public enum State
+    {
+        PAUSE,
+        RUN,
+        RESUME,
+        STOPPED
+    }
+
+
+
     private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
+
+
 
     public PlayScreen(GeometryAssault game) {
 
         this.game = game;
-
         player1 = new Player(true);
         player2 = new Player(false);
 
@@ -118,14 +134,19 @@ public class PlayScreen implements Screen {
         img.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
                 Fighter createdFighter = player.addFighter(fighter);
-                if (createdFighter != null) {
-                    HealthBar healthBar = new HealthBar(0f, 1f, 0.1f, false, createdFighter);
-                    healthBars.add(healthBar);
-                    st.addActor(healthBar);
-                    return true;
+
+                if(state == State.RUN) {
+                    if (createdFighter != null) {
+                        HealthBar healthBar = new HealthBar(0f, 1f, 0.1f, false, createdFighter);
+                        healthBars.add(healthBar);
+                        st.addActor(healthBar);
+                        return true;
+                    }
                 }
                 return false;
+
             }
         });
         img.setPosition(x, y);
@@ -152,6 +173,8 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float delta) {
+
+
         handleInput();
         player1.update(delta);
         player2.update(delta);
@@ -253,7 +276,27 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+        if(Gdx.input.isKeyPressed(Input.Keys.P)){
+            setGameState(State.PAUSE);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.R)){
+            setGameState(State.RUN);
+        }
+
+        switch (state){
+            case RUN:
+                update(delta);
+                break;
+            case PAUSE:
+                break;
+            case RESUME:
+                break;
+            default:
+                break;
+
+        }
+
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
@@ -302,11 +345,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
-
+        this.state = State.PAUSE;
     }
 
     @Override
     public void resume() {
+        this.state = State.RUN;
 
     }
 
@@ -318,5 +362,9 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void setGameState(State s){
+        this.state = s;
     }
 }
