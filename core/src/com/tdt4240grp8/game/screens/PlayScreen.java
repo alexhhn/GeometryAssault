@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
+import com.tdt4240grp8.game.sounds.SoundManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.sprites.Square;
@@ -160,6 +161,7 @@ public class PlayScreen implements Screen {
             boolean collided = false;
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
                 collided = true;
+
                 if (fighter.attackOffCooldown()) {
                     fighter.attack(player2);
                     fighter.resetAttackCooldown();
@@ -168,6 +170,7 @@ public class PlayScreen implements Screen {
             for (Fighter fighter2 : player2.getFighters()) {
                 if (collides(fighter.getBounds(), fighter2.getBounds())) {
                     collided = true;
+
                     if (fighter.attackOffCooldown()) {
                         fighter.attack(fighter2);
                         fighter.resetAttackCooldown();
@@ -207,6 +210,7 @@ public class PlayScreen implements Screen {
         ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
             if (fighter.isDead()) {
+                SoundManager.sharedInstance.play(SoundManager.sharedInstance.death);
                 markedForDeath.add(fighter);
             }
         }
@@ -218,6 +222,7 @@ public class PlayScreen implements Screen {
         markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player2.getFighters()) {
             if (fighter.isDead()) {
+                SoundManager.sharedInstance.play(SoundManager.sharedInstance.death);
                 markedForDeath.add(fighter);
             }
         }
