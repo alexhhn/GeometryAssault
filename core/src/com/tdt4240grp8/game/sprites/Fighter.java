@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Fighter extends GameObject {
+public abstract class Fighter extends GameObject {
 
     private float currentAttackCooldown;
 
@@ -25,6 +25,8 @@ public class Fighter extends GameObject {
             currentAttackCooldown = 0;
         }
     }
+
+    public abstract int getMaxHealth();
 
     public void move(float delta) {
         position.x += velocity.x * delta;

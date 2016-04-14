@@ -116,7 +116,7 @@ public class PlayScreen implements Screen {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Fighter createdFighter = player.addFighter(fighter);
                 if (createdFighter != null) {
-                    HealthBar healthBar = new HealthBar(0f, 1f, 0.1f, false, createdFighter);
+                    HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false, createdFighter);
                     healthBars.add(healthBar);
                     player.addGold(-100);
                     st.addActor(healthBar);
@@ -228,7 +228,7 @@ public class PlayScreen implements Screen {
         for (int i = healthBars.size() - 1; i >= 0; i--) {
             HealthBar healthBar = healthBars.get(i);
             healthBar.setPosition(healthBar.getFighter().getPosition().x, healthBar.getFighter().getPosition().y + 100);
-            healthBar.setValue(healthBar.getFighter().getHeath() / 10.0f);
+            healthBar.setValue((float) healthBar.getFighter().getHeath() / (float) healthBar.getFighter().getMaxHealth());
             if (healthBar.getValue() == 0f) {
                 healthBars.remove(healthBar);
                 healthBar.remove();

@@ -25,4 +25,9 @@ public class Triangle extends Fighter {
         velocity = new Vector2(isGoingLeft ? MOVEMENT_SPEED : -MOVEMENT_SPEED, 0);
     }
 
+    @Override
+    public int getMaxHealth() {
+        return MAX_HEALTH;
+    }
+
 }
