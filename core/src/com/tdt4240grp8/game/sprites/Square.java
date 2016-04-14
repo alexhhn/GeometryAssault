@@ -18,7 +18,7 @@ public class Square extends Fighter {
     public Square(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
         texture = TextureManager.getInstance().getTexture("sprite-animation2.png");
-        animation = new Animation(texture);
+        animation = new Animation(texture,6,5);
         bounds = new Rectangle(x, y, animation.getWidth(), animation.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;

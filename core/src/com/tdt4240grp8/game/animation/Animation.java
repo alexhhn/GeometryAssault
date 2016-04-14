@@ -12,8 +12,8 @@ import com.tdt4240grp8.game.managers.TextureManager;
  */
 public class Animation{
 
-    private static final int        FRAME_COLS = 6;         // #1
-    private static final int        FRAME_ROWS = 5;         // #2
+    private static int        FRAME_COLS;         // #1
+    private static int        FRAME_ROWS;      // #2
 
     com.badlogic.gdx.graphics.g2d.Animation walkAnimation;          // #3
     Texture walkSheet;              // #4
@@ -21,7 +21,9 @@ public class Animation{
     TextureRegion                   currentFrame;           // #7
     float stateTime;                                        // #8
 
-    public Animation(Texture texture) {
+    public Animation(Texture texture, int cols, int rows) {
+        this.FRAME_COLS = cols;
+        this.FRAME_ROWS = rows;
         walkSheet = texture;
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth()/FRAME_COLS, walkSheet.getHeight()/FRAME_ROWS);              // #10
         walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -49,14 +51,11 @@ public class Animation{
         return currentFrame;
     }
 
-    public void updateStateTime(float dt){
+    public void update(float dt){
         stateTime += dt;
-    }
-
-    public void updateCurrentFrame(){
         currentFrame = walkAnimation.getKeyFrame(stateTime,true);
     }
-
+    
     public int getWidth(){
         return walkSheet.getWidth()/FRAME_COLS;
     }

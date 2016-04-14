@@ -239,15 +239,13 @@ public class PlayScreen implements Screen {
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
 
-
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
         healthWidget1.render(delta, game.batch);
         for (Fighter fighter : player1.getFighters()) {
             if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().updateStateTime(delta);
-                ((Square) fighter).getAnimation().updateCurrentFrame();
+                ((Square) fighter).getAnimation().update(delta);
                 game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
 
             }
@@ -258,8 +256,7 @@ public class PlayScreen implements Screen {
         }
         for (Fighter fighter : player2.getFighters()) {
             if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().updateStateTime(delta);
-                ((Square) fighter).getAnimation().updateCurrentFrame();
+                ((Square) fighter).getAnimation().update(delta);
                 game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
 
             }
