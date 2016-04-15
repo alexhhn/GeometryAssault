@@ -29,19 +29,19 @@ public class GoldWidget extends Actor implements PlayerListener {
         this.xOffset = xOffset;
         gold = GeometryAssault.PLAYER_START_GOLD;
 
-        img = new Image(TextureManager.getInstance().getTexture("dollar-icon.png"));
+        img = new Image(TextureManager.getInstance().getTexture("gold-bar-icon.png"));
         img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
 
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        goldFontParameter.size = 35;
+        goldFontParameter.size = 45;
         goldFont = generator.generateFont(goldFontParameter);
-        goldFont.setColor(Color.WHITE);
+        goldFont.setColor(Color.valueOf("f85900"));
     }
 
     public void render(float delta, SpriteBatch batch){
-        goldFont.draw(batch,  "" + gold, img.getX() + xOffset , GeometryAssault.HEIGHT - 50);
+        goldFont.draw(batch,  "$ " + gold, img.getX() + xOffset , GeometryAssault.HEIGHT - 50);
     }
 
 

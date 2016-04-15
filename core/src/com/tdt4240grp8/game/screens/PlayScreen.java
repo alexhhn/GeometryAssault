@@ -51,8 +51,8 @@ public class PlayScreen implements Screen {
     private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
 
     // All of these are just for placing images, texture
-    public static final int buttonXpos = 5, buttonYPos = 10, buttonWidth = 195, buttonHeight = 250;
-    public static final int coreYPos = buttonHeight + 50;
+    public static final int buttonXpos = 5, buttonYPos = 10, buttonWidth = 163, buttonHeight = 250;
+    public static final int coreYPos = buttonHeight + 40;
 
     public PlayScreen(GeometryAssault game) {
 
@@ -65,13 +65,15 @@ public class PlayScreen implements Screen {
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
-        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, .6f);
-        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
-        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
-        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
+        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, 1);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, 1);
+        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, 1);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, 1);
         
 
         st = new Stage();
+        st.addActor(createBg("bg.png",0,0,st));
+
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
         st.addActor(healthWidget1.getImg());
@@ -85,13 +87,13 @@ public class PlayScreen implements Screen {
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
 
-        createButton(player1, "circle-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
-        createButton(player1, "circle-button.png", buttonXpos + buttonWidth, buttonYPos, Player.Fighters.TRIANGLE);
-        createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player1, "square-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player1, "triangle-button.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2 + 10, buttonYPos, Player.Fighters.CIRCLE);
 
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 3, buttonYPos, Player.Fighters.CIRCLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 2, buttonYPos, Player.Fighters.TRIANGLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player2, "triangle-button.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player2, "square-button.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -136,7 +138,7 @@ public class PlayScreen implements Screen {
 
     private Image createBg(String texturePath, int x, int y, Stage st){
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
+//        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
         return img;
     }

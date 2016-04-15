@@ -30,7 +30,7 @@ public class Player {
         fighters = new ArrayList<Fighter>();
         playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
-        core = new Core(isGoingLeft ? 0 : GeometryAssault.WIDTH - 150, PlayScreen.coreYPos);
+        core = new Core(isGoingLeft ? - 40 : GeometryAssault.WIDTH - 210, PlayScreen.coreYPos);
         health = GeometryAssault.PLAYER_START_HEALTHPOINT;
         gold = GeometryAssault.PLAYER_START_GOLD;
     }

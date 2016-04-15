@@ -37,12 +37,14 @@ public class HealthWidget extends Actor implements PlayerListener {
         img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
         img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
 
         healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        healthFontParameter.size = 30;
+        healthFontParameter.size = 45;
         healthFont = generator.generateFont(healthFontParameter);
-        healthFont.setColor(Color.WHITE);
+        healthFont.setColor(Color.valueOf("f85900"));
+
+
 
     }
 

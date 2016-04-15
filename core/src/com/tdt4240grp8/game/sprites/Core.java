@@ -11,7 +11,7 @@ public class Core extends GameObject {
     public Core(int x, int y) {
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        texture = TextureManager.getInstance().getTexture("core1.png");
+        texture = TextureManager.getInstance().getTexture("green-core.png");
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
     }
 
