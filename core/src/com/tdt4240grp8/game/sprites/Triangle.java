@@ -15,8 +15,11 @@ public class Triangle extends Fighter {
 
     public Triangle(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-        texture = TextureManager.getInstance().getTexture("triangle-fighter.png");
-        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        if(isGoingLeft){
+            texture = TextureManager.getInstance().getTexture("triangle-fighter-face-right.png");
+        }else{
+            texture = TextureManager.getInstance().getTexture("triangle-fighter-face-left.png");
+        }        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;

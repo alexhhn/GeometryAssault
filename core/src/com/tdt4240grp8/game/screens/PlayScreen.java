@@ -4,19 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
@@ -51,8 +46,10 @@ public class PlayScreen implements Screen {
     private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
 
     // All of these are just for placing images, texture
-    public static final int buttonXpos = 5, buttonYPos = 10, buttonWidth = 163, buttonHeight = 250;
+    public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250;
     public static final int coreYPos = buttonHeight + 40;
+    public static final int hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
+            goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4;
 
     public PlayScreen(GeometryAssault game) {
 
@@ -65,14 +62,15 @@ public class PlayScreen implements Screen {
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
-        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, 1);
-        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, 1);
-        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, 1);
-        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, 1);
+        goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5, -30, 1);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5, -30, 1);
+        healthWidget1 = new HealthWidget(hudXPos,hudYPos, 6, 1);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, hudYPos, 3, 1);
         
 
         st = new Stage();
-        st.addActor(createBg("bg.png",0,0,st));
+        st.addActor(createStaticTexture("bg.png",0,0,st));
+        st.addActor(createStaticTexture("bottomBanner.png",0,0,st));
 
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
@@ -91,9 +89,9 @@ public class PlayScreen implements Screen {
         createButton(player1, "triangle-button.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
         createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2 + 10, buttonYPos, Player.Fighters.CIRCLE);
 
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
-        createButton(player2, "triangle-button.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
-        createButton(player2, "square-button.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player2, "triangle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -136,7 +134,7 @@ public class PlayScreen implements Screen {
         return img;
     }
 
-    private Image createBg(String texturePath, int x, int y, Stage st){
+    private Image createStaticTexture(String texturePath, int x, int y, Stage st){
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
 //        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
@@ -270,8 +268,10 @@ public class PlayScreen implements Screen {
 
         for (Fighter fighter : player1.getFighters()) {
             if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().update(delta);
-                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+                // uncomment for navigation
+//                ((Square) fighter).getAnimation().update(delta);
+//                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
 
             }
             else{
@@ -281,8 +281,11 @@ public class PlayScreen implements Screen {
         }
         for (Fighter fighter : player2.getFighters()) {
             if (fighter instanceof Square){
-                ((Square) fighter).getAnimation().update(delta);
-                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+                // uncomment for navigation
+
+//                ((Square) fighter).getAnimation().update(delta);
+//                game.batch.draw(((Square) fighter).getAnimation().getCurrentFrame(),fighter.getPosition().x,fighter.getPosition().y);
+                game.batch.draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
 
             }
             else{

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.observable.PlayerListener;
+import com.tdt4240grp8.game.screens.PlayScreen;
 import com.tdt4240grp8.game.sprites.Fighter;
 
 /**
@@ -41,7 +42,7 @@ public class GoldWidget extends Actor implements PlayerListener {
     }
 
     public void render(float delta, SpriteBatch batch){
-        goldFont.draw(batch,  "$ " + gold, img.getX() + xOffset , GeometryAssault.HEIGHT - 50);
+        goldFont.draw(batch,  "$" + gold, img.getX() + xOffset , PlayScreen.hudTextYPos);
     }
 
 
