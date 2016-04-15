@@ -50,6 +50,10 @@ public class PlayScreen implements Screen {
 
     private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
 
+    // All of these are just for placing images, texture
+    public static final int buttonXpos = 5, buttonYPos = 10, buttonWidth = 195, buttonHeight = 250;
+    public static final int coreYPos = buttonHeight + 50;
+
     public PlayScreen(GeometryAssault game) {
 
         this.game = game;
@@ -81,13 +85,13 @@ public class PlayScreen implements Screen {
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
 
-        createButton(player1, "circle-button.png", 50, 10, Player.Fighters.SQUARE);
-        createButton(player1, "circle-button.png", 200, 10, Player.Fighters.TRIANGLE);
-        createButton(player1, "circle-button.png", 350, 10, Player.Fighters.CIRCLE);
+        createButton(player1, "circle-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player1, "circle-button.png", buttonXpos + buttonWidth, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2, buttonYPos, Player.Fighters.CIRCLE);
 
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -500, 10, Player.Fighters.CIRCLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -350, 10, Player.Fighters.TRIANGLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -200, 10, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 3, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth * 2, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player2, "circle-button.png", GeometryAssault.WIDTH - buttonWidth, buttonYPos, Player.Fighters.SQUARE);
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

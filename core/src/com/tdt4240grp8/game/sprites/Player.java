@@ -2,6 +2,7 @@ package com.tdt4240grp8.game.sprites;
 
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.observable.PlayerListener;
+import com.tdt4240grp8.game.screens.PlayScreen;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class Player {
         fighters = new ArrayList<Fighter>();
         playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
-        core = new Core(isGoingLeft ? 0 : GeometryAssault.WIDTH - 150, 100);
+        core = new Core(isGoingLeft ? 0 : GeometryAssault.WIDTH - 150, PlayScreen.coreYPos);
         health = GeometryAssault.PLAYER_START_HEALTHPOINT;
         gold = GeometryAssault.PLAYER_START_GOLD;
     }
