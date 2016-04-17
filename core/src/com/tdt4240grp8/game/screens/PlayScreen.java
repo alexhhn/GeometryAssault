@@ -1,11 +1,14 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
+import com.tdt4240grp8.game.sounds.SoundManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.sprites.Square;
@@ -26,7 +30,7 @@ import com.tdt4240grp8.game.widgets.ProductionPreview;
 
 import java.util.ArrayList;
 
-public class PlayScreen implements Screen {
+public class PlayScreen implements Screen{
 
     private GeometryAssault game;
 
@@ -44,10 +48,37 @@ public class PlayScreen implements Screen {
     public static final int hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
             goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4;
 
+    private Sound music;
+    private Sound punch;
+    private Sound death;
+
+    public State state = State.RUN;
+
+    public enum State
+    {
+        PAUSE,
+        RUN,
+        RESUME,
+        STOPPED
+    }
+
+
+
     public PlayScreen(GeometryAssault game) {
         this.game = game;
         player1 = new Player(true);
         player2 = new Player(false);
+
+        //Get rid of old music
+        SoundManager.sharedInstance.muteMusic();
+
+        if(GeometryAssault.soundEnabled) {
+            music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
+            punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
+            death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
+            long id = music.play();
+            SoundManager.sharedInstance.put(id, music);
+        }
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
@@ -98,13 +129,17 @@ public class PlayScreen implements Screen {
         img.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
                 Fighter createdFighter = player.addFighter(fighter);
-                if (createdFighter != null) {
-                    HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
-                    createdFighter.addFighterListener(healthBar);
-                    player.addGold(-100);
-                    st.addActor(healthBar);
-                    return true;
+
+                if (state == State.RUN) {
+                    if (createdFighter != null) {
+                        HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
+                        createdFighter.addFighterListener(healthBar);
+                        player.addGold(-100);
+                        st.addActor(healthBar);
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -132,6 +167,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float delta) {
+
         handleInput();
         player1.update(delta);
         player2.update(delta);
@@ -141,6 +177,7 @@ public class PlayScreen implements Screen {
             boolean collided = false;
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
                 collided = true;
+
                 if (fighter.attackOffCooldown()) {
                     fighter.attack(player2);
                     fighter.resetAttackCooldown();
@@ -149,6 +186,7 @@ public class PlayScreen implements Screen {
             for (Fighter fighter2 : player2.getFighters()) {
                 if (collides(fighter.getBounds(), fighter2.getBounds())) {
                     collided = true;
+
                     if (fighter.attackOffCooldown()) {
                         fighter.attack(fighter2);
                         fighter.resetAttackCooldown();
@@ -188,6 +226,11 @@ public class PlayScreen implements Screen {
         ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
             if (fighter.isDead()) {
+                if(GeometryAssault.soundEnabled){
+                    long id = punch.play();
+
+                }
+
                 markedForDeath.add(fighter);
             }
         }
@@ -199,6 +242,9 @@ public class PlayScreen implements Screen {
         markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player2.getFighters()) {
             if (fighter.isDead()) {
+                if(GeometryAssault.soundEnabled){
+                    long id = punch.play();
+                }
                 markedForDeath.add(fighter);
             }
         }
@@ -220,7 +266,46 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+        //pause
+        if(Gdx.input.isKeyPressed(Input.Keys.P)){
+            setGameState(State.PAUSE);
+        }
+
+        //resume
+        if(Gdx.input.isKeyPressed(Input.Keys.R)){
+            setGameState(State.RUN);
+        }
+
+        //mute music
+        if(Gdx.input.isKeyPressed(Input.Keys.M)){
+            GeometryAssault.soundEnabled = false;
+            SoundManager.sharedInstance.muteMusic();
+        }
+
+        //enable music
+        if(Gdx.input.isKeyPressed(Input.Keys.E)){
+            //Get rid of old music before playing new music.
+            SoundManager.sharedInstance.muteMusic();
+
+            GeometryAssault.soundEnabled = true;
+            long id = music.play();
+            SoundManager.sharedInstance.put(id,music);
+        }
+
+        switch (state){
+            case RUN:
+                update(delta);
+                break;
+            case PAUSE:
+                break;
+            case RESUME:
+                break;
+            default:
+                break;
+
+        }
+
+
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
@@ -250,7 +335,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
-
+        this.state = State.PAUSE;
     }
 
     @Override
@@ -265,6 +350,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
+        punch.dispose();
+        death.dispose();
+    }
 
+    public void setGameState(State s){
+        this.state = s;
     }
 }
