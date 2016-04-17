@@ -2,18 +2,15 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -25,7 +22,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sounds.SoundManager;
-import com.tdt4240grp8.game.sprites.Circle;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
 import com.tdt4240grp8.game.sprites.Square;
@@ -81,14 +77,15 @@ public class PlayScreen implements Screen{
         player2 = new Player(false);
 
         //Get rid of old music
-        SoundManager.sharedInstance.mute();
+        SoundManager.sharedInstance.muteMusic();
 
-        music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
-        punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
-        death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
-        long id = music.play();
-        SoundManager.sharedInstance.put(id,music);
-
+        if(GeometryAssault.soundEnabled) {
+            music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
+            punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
+            death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
+            long id = music.play();
+            SoundManager.sharedInstance.put(id, music);
+        }
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
@@ -295,19 +292,26 @@ public class PlayScreen implements Screen{
 
     @Override
     public void render(float delta) {
+        //pause
         if(Gdx.input.isKeyPressed(Input.Keys.P)){
             setGameState(State.PAUSE);
         }
+
+        //resume
         if(Gdx.input.isKeyPressed(Input.Keys.R)){
             setGameState(State.RUN);
         }
+
+        //mute music
         if(Gdx.input.isKeyPressed(Input.Keys.M)){
             GeometryAssault.soundEnabled = false;
-            SoundManager.sharedInstance.mute();
+            SoundManager.sharedInstance.muteMusic();
         }
+
+        //enable music
         if(Gdx.input.isKeyPressed(Input.Keys.E)){
             //Get rid of old music before playing new music.
-            SoundManager.sharedInstance.mute();
+            SoundManager.sharedInstance.muteMusic();
 
             GeometryAssault.soundEnabled = true;
             long id = music.play();
@@ -381,7 +385,6 @@ public class PlayScreen implements Screen{
 
     @Override
     public void resume() {
-        this.state = State.RUN;
 
     }
 
@@ -392,7 +395,9 @@ public class PlayScreen implements Screen{
 
     @Override
     public void dispose() {
-
+        music.dispose();
+        punch.dispose();
+        death.dispose();
     }
 
     public void setGameState(State s){

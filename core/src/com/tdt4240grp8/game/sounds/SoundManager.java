@@ -25,7 +25,7 @@ public class SoundManager {
         ids.put(id, s);
     }
 
-    public void mute(){
+    public void muteMusic(){
         for (Map.Entry<Long, Sound> entry : ids.entrySet()) {
             long id = entry.getKey();
             Sound sound = entry.getValue();
@@ -34,15 +34,15 @@ public class SoundManager {
         }
     }
 
-    public static void muteFX(){
-        VOLUME = 0.0f;
-    }
-
-    public static void normalizeFX(){
-        VOLUME = 1.0f;
-    }
-
-
+//    public static void muteFX(){
+//        VOLUME = 0.0f;
+//    }
+//
+//    public static void normalizeFX(){
+//        VOLUME = 1.0f;
+//    }
+//
+//
 
 
 }
