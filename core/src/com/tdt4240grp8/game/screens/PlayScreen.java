@@ -2,6 +2,7 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -36,25 +37,20 @@ public class PlayScreen implements Screen {
     private GoldWidget goldWidget1, goldWidget2;
     private HealthWidget healthWidget1, healthWidget2;
     private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter goldFontParameter;
+    private FreeTypeFontGenerator.FreeTypeFontParameter timeFontParameter;
 
-    private BitmapFont goldFont;
-
-    private ProgressBar progressBar1;
-    private ProgressBar.ProgressBarStyle progressBarStyle;
+    private BitmapFont timeFont;
 
     private ArrayList<HealthBar> healthBars = new ArrayList<HealthBar>();
 
     // All of these are just for placing images, texture
     public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250;
-    public static final int coreYPos = buttonHeight + 40;
+    public static final int coreYPos = buttonHeight + 5, fighterYPos = coreYPos + 18;
     public static final int hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
             goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4;
 
     public PlayScreen(GeometryAssault game) {
-
         this.game = game;
-
         player1 = new Player(true);
         player2 = new Player(false);
 
@@ -93,23 +89,14 @@ public class PlayScreen implements Screen {
         createButton(player2, "triangle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
         createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
-        goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        goldFontParameter.size = 35;
-        goldFont = generator.generateFont(goldFontParameter); // goldFont size 12 pixels
+        // Create timer
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
+        timeFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        timeFontParameter.size = 60;
+        timeFont = generator.generateFont(timeFontParameter); // goldFont size 12 pixels
+        timeFont.setColor(Color.valueOf("367834"));
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
-        // Create a progressbar
-//        Texture progress_bar = new Texture(Gdx.files.internal("ProgressBar.png"));
-//        Texture progress_bar_knob = new Texture(Gdx.files.internal("knob.png"));
-//        progressBarStyle = new ProgressBar.ProgressBarStyle();
-//        progressBarStyle.background = new TextureRegionDrawable(new TextureRegion(progress_bar));
-//        progressBarStyle.knob = new TextureRegionDrawable(new TextureRegion(progress_bar_knob));
-//        progressBar1 = new ProgressBar(0f,100f,1f,false, progressBarStyle);
-//        progressBar1.setPosition(135,GeometryAssault.HEIGHT - 52);
-//        st.addActor(progressBar1);
-
-        // Create bg
 
     }
 
@@ -252,15 +239,12 @@ public class PlayScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         st.draw();
-
         game.batch.setProjectionMatrix(gamecam.combined);
-
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
-
+        timeFont.draw(game.batch, "01:00", GeometryAssault.WIDTH/2 - 85, buttonYPos + 70);
         goldWidget1.render(delta,game.batch);
         goldWidget2.render(delta,game.batch);
         healthWidget1.render(delta, game.batch);

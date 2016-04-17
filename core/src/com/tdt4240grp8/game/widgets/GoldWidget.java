@@ -34,7 +34,6 @@ public class GoldWidget extends Actor implements PlayerListener {
         img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
-
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         goldFontParameter.size = 45;
         goldFont = generator.generateFont(goldFontParameter);
