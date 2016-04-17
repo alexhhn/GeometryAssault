@@ -49,10 +49,10 @@ public class PlayScreen implements Screen{
     private Image quitBtn;
 
     // All of these are just for placing images, texture
-    public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250;
-    public static final int coreYPos = buttonHeight + 5, fighterYPos = coreYPos + 18;
-    public static final int hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
-            goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4;
+    public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250,
+    coreYPos = buttonHeight + 5, fighterYPos = coreYPos + 18,hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
+            goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4, previewImageSize = 50,
+            progressBarYPos = hudYPos + 13, previewImageYPos = progressBarYPos - 8;
 
     private Sound music;
     private Sound punch;
@@ -157,8 +157,8 @@ public class PlayScreen implements Screen{
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
 
-        productionPreview1 = new ProductionPreview(250, GeometryAssault.HEIGHT - 75, 150, 0, 1, 0.01f, false, st);
-        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 350, GeometryAssault.HEIGHT - 75, -80, 0, 1, 0.01f, false, st);
+        productionPreview1 = new ProductionPreview(goldXPos + 130 + previewImageSize , progressBarYPos, -previewImageSize - 1, 0, 1, 0.01f, false, st, player1);
+        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 480, progressBarYPos, 151, 0, 1, 0.01f, false, st, player2);
 
         goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5, -30, 1);
         goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5, -30, 1);
@@ -177,6 +177,9 @@ public class PlayScreen implements Screen{
         st.addActor(productionPreview2);
         st.addActor(productionPreview2.getImg());
 
+
+        st.getActors().get(6).setVisible(false);
+        st.getActors().get(8).setVisible(false);
 
 
         player1.addPlayerListener(goldWidget1);
@@ -216,10 +219,16 @@ public class PlayScreen implements Screen{
                         createdFighter.addFighterListener(healthBar);
                         player.addGold(-100);
                         st.addActor(healthBar);
+
+                        if (player == player1){
+                            st.getActors().get(6).setVisible(true);
+                        } else{
+                            st.getActors().get(8).setVisible(true);
+                        }
                         return true;
                     }
-
                 }
+
                 return false;
             }
         });
