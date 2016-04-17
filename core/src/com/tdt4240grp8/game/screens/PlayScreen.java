@@ -139,8 +139,6 @@ public class PlayScreen implements Screen{
 
         shapeRenderer = new ShapeRenderer();
 
-
-
         if(GeometryAssault.soundEnabled) {
             music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
             punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
@@ -360,7 +358,7 @@ public class PlayScreen implements Screen{
         shapeRenderer.setProjectionMatrix(gamecam.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(0, 0, 0, 0.5f));
-        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.rect(0, 0, GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
@@ -449,7 +447,7 @@ public class PlayScreen implements Screen{
 
     @Override
     public void pause() {
-        this.state = State.PAUSE;
+
     }
 
     @Override
@@ -464,9 +462,7 @@ public class PlayScreen implements Screen{
 
     @Override
     public void dispose() {
-        music.dispose();
-        punch.dispose();
-        death.dispose();
+
     }
 
     public void setGameState(State s){
