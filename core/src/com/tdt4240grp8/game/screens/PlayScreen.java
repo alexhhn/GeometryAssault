@@ -57,6 +57,7 @@ public class PlayScreen implements Screen{
     private Sound music;
     private Sound punch;
     private Sound death;
+    private Sound spawn;
 
     public State state = State.RUN;
 
@@ -145,6 +146,7 @@ public class PlayScreen implements Screen{
             music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
             punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
             death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
+            spawn = Gdx.audio.newSound(Gdx.files.internal("spawn.mp3"));
             long id = music.play();
             SoundManager.sharedInstance.put(id, music);
         }
@@ -218,6 +220,7 @@ public class PlayScreen implements Screen{
                         st.addActor(healthBar);
                         return true;
                     }
+
                 }
                 return false;
             }
@@ -332,6 +335,7 @@ public class PlayScreen implements Screen{
         }
         for (Fighter fighter : waitingToMove) {
             fighter.move(delta*game.gameModeState.getSpeedMultiplier());
+
         }
         if (player1.isDead() || player2.isDead()) {
             game.setScreen(new VictoryScreen(game));
@@ -358,15 +362,6 @@ public class PlayScreen implements Screen{
     @Override
     public void render(float delta) {
         //pause
-        if(Gdx.input.isKeyPressed(Input.Keys.P)){
-            setGameState(State.PAUSE);
-        }
-
-        //resume
-        if(Gdx.input.isKeyPressed(Input.Keys.R)){
-            setGameState(State.RUN);
-        }
-
         //mute music
         if(Gdx.input.isKeyPressed(Input.Keys.M)){
             GeometryAssault.soundEnabled = false;

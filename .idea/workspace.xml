@@ -53,17 +53,19 @@
       <file leaf-file-name="PlayScreen.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/screens/PlayScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="9.075055">
-              <caret line="407" column="49" selection-start-line="407" selection-start-column="45" selection-end-line="407" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.397351">
+              <caret line="272" column="12" selection-start-line="272" selection-start-column="12" selection-end-line="272" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3275#3755#0" expanded="true" />
-                <element signature="e#3754#3755#0" expanded="true" />
-                <element signature="e#3788#4264#0" expanded="true" />
-                <element signature="e#4263#4264#0" expanded="true" />
-                <element signature="e#4296#4647#0" expanded="true" />
-                <element signature="e#4646#4647#0" expanded="true" />
-                <element signature="e#9608#9617#0" expanded="true" />
+                <element signature="e#3300#3780#0" expanded="true" />
+                <element signature="e#3779#3780#0" expanded="true" />
+                <element signature="e#3813#4289#0" expanded="true" />
+                <element signature="e#4288#4289#0" expanded="true" />
+                <element signature="e#4321#4672#0" expanded="true" />
+                <element signature="e#4671#4672#0" expanded="true" />
+                <element signature="e#8325#9010#0" expanded="true" />
+                <element signature="e#9009#9010#0" expanded="true" />
+                <element signature="e#9707#9716#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -93,7 +95,7 @@
         <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Player.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+              <caret line="63" column="108" selection-start-line="63" selection-start-column="108" selection-end-line="63" selection-end-column="108" />
               <folding />
             </state>
           </provider>
@@ -2370,12 +2372,12 @@
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/HealthWidget.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Core.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/GoldWidget.java" />
-        <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Player.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Triangle.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Square.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Circle.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/GeometryAssault.java" />
+        <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Player.java" />
         <option value="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/screens/PlayScreen.java" />
       </list>
     </option>
@@ -3047,13 +3049,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3275#3755#0" expanded="true" />
-            <element signature="e#3754#3755#0" expanded="true" />
-            <element signature="e#3788#4264#0" expanded="true" />
-            <element signature="e#4263#4264#0" expanded="true" />
-            <element signature="e#4296#4647#0" expanded="true" />
-            <element signature="e#4646#4647#0" expanded="true" />
-            <element signature="e#9608#9617#0" expanded="true" />
+            <element signature="e#3300#3780#0" expanded="true" />
+            <element signature="e#3779#3780#0" expanded="true" />
+            <element signature="e#3813#4289#0" expanded="true" />
+            <element signature="e#4288#4289#0" expanded="true" />
+            <element signature="e#4321#4672#0" expanded="true" />
+            <element signature="e#4671#4672#0" expanded="true" />
+            <element signature="e#8325#9010#0" expanded="true" />
+            <element signature="e#9009#9010#0" expanded="true" />
+            <element signature="e#9707#9716#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3144,13 +3148,15 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3275#3755#0" expanded="true" />
-            <element signature="e#3754#3755#0" expanded="true" />
-            <element signature="e#3788#4264#0" expanded="true" />
-            <element signature="e#4263#4264#0" expanded="true" />
-            <element signature="e#4296#4647#0" expanded="true" />
-            <element signature="e#4646#4647#0" expanded="true" />
-            <element signature="e#9608#9617#0" expanded="true" />
+            <element signature="e#3300#3780#0" expanded="true" />
+            <element signature="e#3779#3780#0" expanded="true" />
+            <element signature="e#3813#4289#0" expanded="true" />
+            <element signature="e#4288#4289#0" expanded="true" />
+            <element signature="e#4321#4672#0" expanded="true" />
+            <element signature="e#4671#4672#0" expanded="true" />
+            <element signature="e#8325#9010#0" expanded="true" />
+            <element signature="e#9009#9010#0" expanded="true" />
+            <element signature="e#9707#9716#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3287,22 +3293,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="75" selection-start-line="46" selection-start-column="75" selection-end-line="46" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Square.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3330,19 +3320,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="63" column="108" selection-start-line="63" selection-start-column="108" selection-end-line="63" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="46" column="75" selection-start-line="46" selection-start-column="75" selection-end-line="46" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/screens/PlayScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="9.075055">
-          <caret line="407" column="49" selection-start-line="407" selection-start-column="45" selection-end-line="407" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.397351">
+          <caret line="272" column="12" selection-start-line="272" selection-start-column="12" selection-end-line="272" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3275#3755#0" expanded="true" />
-            <element signature="e#3754#3755#0" expanded="true" />
-            <element signature="e#3788#4264#0" expanded="true" />
-            <element signature="e#4263#4264#0" expanded="true" />
-            <element signature="e#4296#4647#0" expanded="true" />
-            <element signature="e#4646#4647#0" expanded="true" />
-            <element signature="e#9608#9617#0" expanded="true" />
+            <element signature="e#3300#3780#0" expanded="true" />
+            <element signature="e#3779#3780#0" expanded="true" />
+            <element signature="e#3813#4289#0" expanded="true" />
+            <element signature="e#4288#4289#0" expanded="true" />
+            <element signature="e#4321#4672#0" expanded="true" />
+            <element signature="e#4671#4672#0" expanded="true" />
+            <element signature="e#8325#9010#0" expanded="true" />
+            <element signature="e#9009#9010#0" expanded="true" />
+            <element signature="e#9707#9716#0" expanded="true" />
           </folding>
         </state>
       </provider>
