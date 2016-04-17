@@ -2,8 +2,11 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -35,10 +38,14 @@ public class PlayScreen implements Screen {
     private HealthWidget healthWidget1, healthWidget2;
     private ProductionPreview productionPreview1, productionPreview2;
 
+    // All of these are just for placing images, texture
+    public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250;
+    public static final int coreYPos = buttonHeight + 5, fighterYPos = coreYPos + 18;
+    public static final int hudXPos = 5, hudYPos = GeometryAssault.HEIGHT - 80, heartIconHeight = 65,
+            goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4;
+
     public PlayScreen(GeometryAssault game) {
-
         this.game = game;
-
         player1 = new Player(true);
         player2 = new Player(false);
 
@@ -50,12 +57,16 @@ public class PlayScreen implements Screen {
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
 
-        goldWidget1 = new GoldWidget(20, GeometryAssault.HEIGHT - 100, 90, .6f);
-        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - 100, GeometryAssault.HEIGHT - 100, -90, .6f);
-        healthWidget1 = new HealthWidget(23,GeometryAssault.HEIGHT - 175, 80, .7f);
-        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, GeometryAssault.HEIGHT - 175, -40, .7f);
         productionPreview1 = new ProductionPreview(250, GeometryAssault.HEIGHT - 75, 150, 0, 1, 0.01f, false, st);
         productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 350, GeometryAssault.HEIGHT - 75, -80, 0, 1, 0.01f, false, st);
+
+        goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5, -30, 1);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5, -30, 1);
+        healthWidget1 = new HealthWidget(hudXPos,hudYPos, 6, 1);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, hudYPos, 3, 1);
+        
+        st.addActor(createStaticTexture("bg.png",0,0,st));
+        st.addActor(createStaticTexture("bottomBanner.png",0,0,st));
 
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
@@ -73,13 +84,13 @@ public class PlayScreen implements Screen {
         player1.addPlayerListener(productionPreview1);
         player2.addPlayerListener(productionPreview2);
 
-        createButton(player1, "circle-button.png", 50, 10, Player.Fighters.SQUARE);
-        createButton(player1, "circle-button.png", 200, 10, Player.Fighters.TRIANGLE);
-        createButton(player1, "circle-button.png", 350, 10, Player.Fighters.CIRCLE);
+        createButton(player1, "square-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player1, "triangle-button.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2 + 10, buttonYPos, Player.Fighters.CIRCLE);
 
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -500, 10, Player.Fighters.CIRCLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -350, 10, Player.Fighters.TRIANGLE);
-        createButton(player2, "circle-button.png", GeometryAssault.WIDTH -200, 10, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player2, "triangle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
     }
 
     private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
@@ -103,9 +114,9 @@ public class PlayScreen implements Screen {
         return img;
     }
 
-    private Image createBg(String texturePath, int x, int y, Stage st){
+    private Image createStaticTexture(String texturePath, int x, int y, Stage st){
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
+//        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
         return img;
     }
@@ -212,27 +223,21 @@ public class PlayScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         st.draw();
-
         game.batch.setProjectionMatrix(gamecam.combined);
-
         game.batch.begin();
         game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
         game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
-
         goldWidget1.render(delta,game.batch);
         goldWidget2.render(delta,game.batch);
         healthWidget1.render(delta, game.batch);
         healthWidget2.render(delta, game.batch);
 
         for (Fighter fighter : player1.getFighters()) {
-            fighter.getAnimation().update(delta);
-            game.batch.draw(fighter.getAnimation().getFrame(),fighter.getPosition().x,fighter.getPosition().y);
+            game.batch.draw(fighter.getTexture(),fighter.getPosition().x,fighter.getPosition().y);
         }
         for (Fighter fighter : player2.getFighters()) {
-            fighter.getAnimation().update(delta);
-            game.batch.draw(fighter.getAnimation().getFrame(),fighter.getPosition().x,fighter.getPosition().y);
+            game.batch.draw(fighter.getTexture(),fighter.getPosition().x,fighter.getPosition().y);
         }
 
         game.batch.end();

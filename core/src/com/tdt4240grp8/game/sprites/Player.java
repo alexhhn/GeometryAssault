@@ -2,6 +2,7 @@ package com.tdt4240grp8.game.sprites;
 
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.observable.PlayerListener;
+import com.tdt4240grp8.game.screens.PlayScreen;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class Player {
         fighters = new ArrayList<Fighter>();
         playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
-        core = new Core(isGoingLeft ? 0 : GeometryAssault.WIDTH - 150, 100);
+        core = new Core(isGoingLeft ?  0 : GeometryAssault.WIDTH - 200, PlayScreen.coreYPos, isGoingLeft);
         health = GeometryAssault.PLAYER_START_HEALTHPOINT;
         gold = GeometryAssault.PLAYER_START_GOLD;
     }
@@ -60,13 +61,13 @@ public class Player {
         }
         switch (fighterType) {
             case SQUARE:
-                fighterInProduction = new Square(core.getPosition().x, core.getPosition().y, isGoingLeft);
+                fighterInProduction = new Square(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
             case TRIANGLE:
-                fighterInProduction = new Triangle(core.getPosition().x, core.getPosition().y, isGoingLeft);
+                fighterInProduction = new Triangle(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
             case CIRCLE:
-                fighterInProduction = new Circle(core.getPosition().x, core.getPosition().y, isGoingLeft);
+                fighterInProduction = new Circle(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
         }
         for (PlayerListener playerListener : playerListeners) {

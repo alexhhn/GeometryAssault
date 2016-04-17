@@ -16,9 +16,13 @@ public class Circle extends Fighter {
 
     public Circle(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("circle.png"));
-        animation = new Animation(textureRegion, 1, 3);
-        bounds = new Rectangle(x, y, animation.getFrame().getRegionWidth(), animation.getFrame().getRegionHeight());
+
+        if(isGoingLeft){
+            texture = TextureManager.getInstance().getTexture("circle-fighter-face-right.png");
+        }else{
+            texture = TextureManager.getInstance().getTexture("circle-fighter-face-left.png");
+        }
+        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;
@@ -31,5 +35,6 @@ public class Circle extends Fighter {
     public int getMaxHealth() {
         return MAX_HEALTH;
     }
+
 
 }

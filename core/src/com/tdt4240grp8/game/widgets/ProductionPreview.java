@@ -44,7 +44,7 @@ public class ProductionPreview extends ProgressBar implements PlayerListener {
             img.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture(noneInProduction))));
             return;
         }
-        img.setDrawable(new SpriteDrawable(new Sprite(newValue.getAnimation().getFrame())));
+        img.setDrawable(new SpriteDrawable(new Sprite(newValue.getTexture())));
     }
 
     @Override

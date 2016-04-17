@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.observable.PlayerListener;
+import com.tdt4240grp8.game.screens.PlayScreen;
 import com.tdt4240grp8.game.sprites.Fighter;
-import com.tdt4240grp8.game.sprites.Player;
 
 
 /**
@@ -37,12 +37,14 @@ public class HealthWidget extends Actor implements PlayerListener {
         img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
         img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Bold.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
 
         healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        healthFontParameter.size = 30;
+        healthFontParameter.size = 45;
         healthFont = generator.generateFont(healthFontParameter);
-        healthFont.setColor(Color.WHITE);
+        healthFont.setColor(Color.valueOf("ff0000"));
+
+
 
     }
 
@@ -51,8 +53,11 @@ public class HealthWidget extends Actor implements PlayerListener {
     }
 
     public void render(float delta, SpriteBatch batch) {
-        healthFont.draw(batch,  "" + health, img.getX() + xOffset , GeometryAssault.HEIGHT - 135);
-//        System.out.println(img.getX() + " "+ img.getWidth()/2 +" "+  xOffset);
+        if(health >= 10){
+            healthFont.draw(batch,  "" + health, img.getX() + xOffset, PlayScreen.hudTextYPos);
+        }else{
+            healthFont.draw(batch,  "0" + health, img.getX() + xOffset, PlayScreen.hudTextYPos);
+        }
     }
 
     @Override
