@@ -57,7 +57,6 @@ public class PlayScreen implements Screen{
     private Sound music;
     private Sound punch;
     private Sound death;
-    private Sound spawn;
 
     public State state = State.RUN;
 
@@ -146,7 +145,6 @@ public class PlayScreen implements Screen{
             music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
             punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
             death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
-            spawn = Gdx.audio.newSound(Gdx.files.internal("spawn.mp3"));
             long id = music.play();
             SoundManager.sharedInstance.put(id, music);
         }

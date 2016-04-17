@@ -1,5 +1,7 @@
 package com.tdt4240grp8.game.widgets;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +19,7 @@ public class ProductionPreview extends ProgressBar implements PlayerListener {
     private Image img;
     private Stage st;
     private static final String noneInProduction = "noneInProduction.png";
+
 
     public ProductionPreview(int xPos, int yPos, int xOffset, float min, float max, float stepSize, boolean vertical, Stage st) {
         super(min, max, stepSize, vertical, new ProgressBarStyle());
