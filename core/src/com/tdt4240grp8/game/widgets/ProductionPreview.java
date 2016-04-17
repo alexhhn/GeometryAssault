@@ -59,7 +59,6 @@ public class ProductionPreview extends ProgressBar implements PlayerListener {
     @Override
     public void currentProductionTimeChanged(float oldValue, float newValue, float totalValue) {
         setValue(newValue / totalValue);
-        System.out.println("totalValue" + newValue);
         if (newValue >= totalValue){
             if (player.isGoingLeft()){
                 st.getActors().get(6).setVisible(false);

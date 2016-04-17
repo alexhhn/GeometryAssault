@@ -5,14 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65ba31df-eb80-402d-b69e-36c5165eaa54" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/ProgressBar.png" afterPath="$PROJECT_DIR$/android/assets/ProgressBar.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/knob.png" afterPath="$PROJECT_DIR$/android/assets/knob.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/screens/PlayScreen.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/screens/PlayScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Circle.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Circle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Fighter.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Fighter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Square.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Square.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Triangle.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/sprites/Triangle.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java" afterPath="$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java" />
     </list>
     <ignored path="GeometryAssault.iws" />
@@ -76,8 +68,8 @@
       <file leaf-file-name="ProductionPreview.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4827586">
-              <caret line="60" column="40" selection-start-line="60" selection-start-column="40" selection-end-line="60" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.50292397">
+              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2674,14 +2666,14 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="FullScreen" value="true" />
-    <property name="device.picker.selection" value="" />
+    <property name="device.picker.selection" value="BH90LGLU0D" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/android/assets/fonts" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Desktop">
+  <component name="RunManager" selected="Android Application.android">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="DEPLOY" value="true" />
@@ -2980,9 +2972,9 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28163773" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28163773" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -3260,8 +3252,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/tdt4240grp8/game/widgets/ProductionPreview.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4827586">
-          <caret line="60" column="40" selection-start-line="60" selection-start-column="40" selection-end-line="60" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.50292397">
+          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
           <folding />
         </state>
       </provider>
