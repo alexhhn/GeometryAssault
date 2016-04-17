@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,6 +43,11 @@ public class PlayScreen implements Screen{
     private HealthWidget healthWidget1, healthWidget2;
     private ProductionPreview productionPreview1, productionPreview2;
 
+    private ShapeRenderer shapeRenderer;
+    private Image resumeBtn;
+    private Image pauseBtn;
+    private Image quitBtn;
+
     // All of these are just for placing images, texture
     public static final int buttonXpos = 5, buttonYPos = 2 , buttonWidth = 163, buttonHeight = 250;
     public static final int coreYPos = buttonHeight + 5, fighterYPos = coreYPos + 18;
@@ -63,6 +69,65 @@ public class PlayScreen implements Screen{
     }
 
 
+    public void createMenuButtons(){
+        resumeBtn = new Image(TextureManager.getInstance().getTexture("play.jpg"));
+        pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.jpg"));
+        quitBtn = new Image(TextureManager.getInstance().getTexture("quit.png"));
+
+        resumeBtn.setVisible(false);
+        quitBtn.setVisible(false);
+
+        resumeBtn.setSize(50,50);
+        pauseBtn.setSize(50,50);
+        quitBtn.setSize(50,50);
+
+        pauseBtn.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() -100);
+        resumeBtn.setPosition(Gdx.graphics.getWidth()/2 - 50,Gdx.graphics.getHeight() -100);
+        quitBtn.setPosition(Gdx.graphics.getWidth()/2 + 50,Gdx.graphics.getHeight()-100);
+
+        resumeBtn.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (state == State.PAUSE){
+                    setGameState(State.RUN);
+                    resumeBtn.setVisible(false);
+                    quitBtn.setVisible(false);
+                    pauseBtn.setVisible(true);
+                    return true;
+                }
+                return false;
+
+            }
+
+        });
+
+        pauseBtn.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(state == State.RUN){
+                    setGameState(State.PAUSE);
+                    pauseBtn.setVisible(false);
+                    resumeBtn.setVisible(true);
+                    quitBtn.setVisible(true);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        quitBtn.addListener(new ClickListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(state == State.PAUSE){
+                    game.setScreen(new VictoryScreen(game));
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
     public PlayScreen(GeometryAssault game) {
         this.game = game;
@@ -71,6 +136,10 @@ public class PlayScreen implements Screen{
 
         //Get rid of old music
         SoundManager.sharedInstance.muteMusic();
+
+        shapeRenderer = new ShapeRenderer();
+
+
 
         if(GeometryAssault.soundEnabled) {
             music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
@@ -108,12 +177,20 @@ public class PlayScreen implements Screen{
         st.addActor(productionPreview2);
         st.addActor(productionPreview2.getImg());
 
+
+
         player1.addPlayerListener(goldWidget1);
         player2.addPlayerListener(goldWidget2);
         player1.addPlayerListener(healthWidget1);
         player2.addPlayerListener(healthWidget2);
         player1.addPlayerListener(productionPreview1);
         player2.addPlayerListener(productionPreview2);
+
+        createMenuButtons();
+
+        st.addActor(resumeBtn);
+        st.addActor(pauseBtn);
+        st.addActor(quitBtn);
 
         createButton(player1, "square-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
         createButton(player1, "triangle-button.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
@@ -123,6 +200,7 @@ public class PlayScreen implements Screen{
         createButton(player2, "triangle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
         createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
     }
+
 
     private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
@@ -264,6 +342,19 @@ public class PlayScreen implements Screen{
         return r1.overlaps(r2);
     }
 
+
+    public void updatePause(float delta){
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.setProjectionMatrix(gamecam.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, 0.5f));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+
     @Override
     public void render(float delta) {
         //pause
@@ -297,6 +388,7 @@ public class PlayScreen implements Screen{
                 update(delta);
                 break;
             case PAUSE:
+
                 break;
             case RESUME:
                 break;
@@ -305,9 +397,10 @@ public class PlayScreen implements Screen{
 
         }
 
+//
+//        Gdx.gl.glClearColor(0, 0, 0, 0);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Gdx.gl.glClearColor(0, 0, 0, 0);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -325,7 +418,26 @@ public class PlayScreen implements Screen{
             game.batch.draw(fighter.getTexture(),fighter.getPosition().x,fighter.getPosition().y);
         }
 
+
+
         game.batch.end();
+
+
+        //Pause black screen with opacity 0.5
+        switch (state){
+            case RUN:
+                break;
+            case PAUSE:
+                updatePause(delta);
+                break;
+            case RESUME:
+                break;
+            default:
+                break;
+
+        }
+
+
     }
 
     @Override
