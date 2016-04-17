@@ -80,6 +80,9 @@ public class PlayScreen implements Screen{
         player1 = new Player(true);
         player2 = new Player(false);
 
+        //Get rid of old music
+        SoundManager.sharedInstance.mute();
+
         music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
         punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
         death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
