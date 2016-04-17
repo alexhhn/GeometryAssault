@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,6 +49,10 @@ public class PlayScreen implements Screen{
     private FreeTypeFontGenerator.FreeTypeFontParameter goldFontParameter;
     private FreeTypeFontGenerator.FreeTypeFontParameter healthFontParameter;
 
+    private Sound music;
+    private Sound punch;
+    private Sound death;
+
     private BitmapFont goldFont;
     private BitmapFont healthFont;
 
@@ -71,10 +76,16 @@ public class PlayScreen implements Screen{
 
 
     public PlayScreen(GeometryAssault game) {
-
         this.game = game;
         player1 = new Player(true);
         player2 = new Player(false);
+
+        music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
+        punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
+        death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
+        long id = music.play();
+        SoundManager.sharedInstance.put(id,music);
+
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
@@ -174,7 +185,6 @@ public class PlayScreen implements Screen{
 
     public void update(float delta) {
 
-
         handleInput();
         player1.update(delta);
         player2.update(delta);
@@ -233,7 +243,11 @@ public class PlayScreen implements Screen{
         ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
             if (fighter.isDead()) {
-                SoundManager.sharedInstance.play(SoundManager.sharedInstance.death);
+                if(GeometryAssault.soundEnabled){
+                    long id = punch.play();
+
+                }
+
                 markedForDeath.add(fighter);
             }
         }
@@ -245,7 +259,9 @@ public class PlayScreen implements Screen{
         markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player2.getFighters()) {
             if (fighter.isDead()) {
-                SoundManager.sharedInstance.play(SoundManager.sharedInstance.death);
+                if(GeometryAssault.soundEnabled){
+                    long id = punch.play();
+                }
                 markedForDeath.add(fighter);
             }
         }
@@ -281,6 +297,18 @@ public class PlayScreen implements Screen{
         }
         if(Gdx.input.isKeyPressed(Input.Keys.R)){
             setGameState(State.RUN);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.M)){
+            GeometryAssault.soundEnabled = false;
+            SoundManager.sharedInstance.mute();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.E)){
+            //Get rid of old music before playing new music.
+            SoundManager.sharedInstance.mute();
+
+            GeometryAssault.soundEnabled = true;
+            long id = music.play();
+            SoundManager.sharedInstance.put(id,music);
         }
 
         switch (state){

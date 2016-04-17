@@ -3,29 +3,35 @@ package com.tdt4240grp8.game.sounds;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by mikaila on 14/04/16.
  */
 public class SoundManager {
     public static SoundManager sharedInstance = new SoundManager();
     public static float VOLUME = 1.0f;
-    public Sound music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
-    public Sound punchSound = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
-    public Sound death = Gdx.audio.newSound(Gdx.files.internal("punch-death.mp3"));
-
+    public HashMap<Long, Sound> ids = new HashMap<Long, Sound>();
 
     private SoundManager(){
-
     }
 
-    public void playMusic(){
-        music.play(VOLUME);
+    public void put(long id, Sound s) {
+        ids.put(id, s);
     }
 
-
-
-    public void play(Sound sound){
-        sound.play(VOLUME);
+    public void mute(){
+        for (Map.Entry<Long, Sound> entry : ids.entrySet()) {
+            long id = entry.getKey();
+            Sound sound = entry.getValue();
+            sound.stop(id);
+            ids.remove(id,sound);
+        }
     }
 
     public static void muteFX(){

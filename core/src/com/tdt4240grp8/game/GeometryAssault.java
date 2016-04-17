@@ -19,6 +19,7 @@ public class GeometryAssault extends Game {
 	public static final String TITLE = "GeometryAssault";
 	public SpriteBatch batch;
 	public GameModeState gameModeState;
+	public static boolean soundEnabled;
 
 
 
@@ -26,10 +27,10 @@ public class GeometryAssault extends Game {
 
 	@Override
 	public void create () {
+		soundEnabled = true;
 		batch = new SpriteBatch();
 		setScreen(new StartScreen(this));
 		gameModeState = new HypersonicState();
-		SoundManager.sharedInstance.playMusic();
 	}
 
 	@Override
