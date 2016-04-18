@@ -31,16 +31,6 @@ public class VictoryScreen implements Screen {
         st = new Stage();
         st.setViewport(gamePort);
         st.addActor(createStaticTexture("bg.png", 0, 0, st));
-        Image startGameButton = new Image(TextureManager.getInstance().getTexture("startGameButton.png"));
-        startGameButton.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                startGame();
-                return true;
-            }
-        });
-        startGameButton.setPosition(200, 200);
-        st.addActor(startGameButton);
     }
 
     private Image createStaticTexture(String texturePath, int x, int y, Stage st) {
@@ -58,8 +48,15 @@ public class VictoryScreen implements Screen {
         Gdx.input.setInputProcessor(st);
     }
 
+    private void handleInput() {
+        if (Gdx.input.justTouched()) {
+            game.setScreen(new StartScreen(game));
+        }
+    }
+
     @Override
     public void render(float delta) {
+        handleInput();
         st.draw();
     }
 

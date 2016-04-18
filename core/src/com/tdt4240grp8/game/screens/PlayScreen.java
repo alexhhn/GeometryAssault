@@ -159,8 +159,8 @@ public class PlayScreen implements Screen{
         productionPreview1 = new ProductionPreview(goldXPos + 130 + previewImageSize , progressBarYPos, -previewImageSize - 1, 0, 1, 0.01f, false, st, player1);
         productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 480, progressBarYPos, 151, 0, 1, 0.01f, false, st, player2);
 
-        st.addActor(createStaticTexture("bg.png",0,0,st));
-        st.addActor(createStaticTexture("bottomBanner.png",0,0,st));
+        st.addActor(createStaticTexture("bg.png", 0, 0));
+        st.addActor(createStaticTexture("bottomBanner.png", 0, 0));
 
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
@@ -230,27 +230,18 @@ public class PlayScreen implements Screen{
         return img;
     }
 
-    private Image createStaticTexture(String texturePath, int x, int y, Stage st){
+    private Image createStaticTexture(String texturePath, int x, int y){
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-//        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
         return img;
     }
 
     @Override
     public void show() {
-        System.out.println("show play " + st);
         Gdx.input.setInputProcessor(st);
     }
 
-    public void handleInput() {
-        if (Gdx.input.justTouched()) {
-        }
-    }
-
     public void update(float delta) {
-
-        handleInput();
         player1.update(delta);
         player2.update(delta);
         ArrayList<Fighter> waitingToMove = new ArrayList<Fighter>();

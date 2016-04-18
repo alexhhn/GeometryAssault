@@ -5,14 +5,25 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
+import com.tdt4240grp8.game.sprites.Fighter;
+import com.tdt4240grp8.game.states.GameModeState;
+import com.tdt4240grp8.game.states.HypersonicState;
+import com.tdt4240grp8.game.states.NormalState;
+import com.tdt4240grp8.game.states.WealthyState;
+import com.tdt4240grp8.game.widgets.HealthBar;
+
+import javax.xml.soap.Text;
 
 public class StartScreen implements Screen {
 
@@ -20,6 +31,7 @@ public class StartScreen implements Screen {
     private Stage st;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
+    private Image muteButton;
 
     public StartScreen(GeometryAssault game) {
         this.game = game;
@@ -30,23 +42,58 @@ public class StartScreen implements Screen {
 
         st = new Stage();
         st.setViewport(gamePort);
-        st.addActor(createStaticTexture("bg.png", 0, 0, st));
-        Image startGameButton = new Image(TextureManager.getInstance().getTexture("startGameButton.png"));
-        startGameButton.addListener(new ClickListener() {
+        st.addActor(createStaticTexture("bg.png", 0, 0));
+        st.addActor(createStaticTexture("GA-title.png", 400, 500));
+        st.addActor(createStaticTexture("modeselect.png", 500, 400));
+
+        addButton("normalModeButton.png", 200, 250, new NormalState());
+        addButton("wealthyModeButton.png", 500, 250, new WealthyState());
+        addButton("hypersonicModeButton.png", 800, 250, new HypersonicState());
+
+        muteButton = new Image(TextureManager.getInstance().getTexture("muteSoundwaves.png"));
+        muteButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                toggleSound();
+                return true;
+            }
+        });
+        muteButton.setPosition(1150, 600);
+        st.addActor(muteButton);
+    }
+
+    private void toggleSound() {
+        if (game.soundEnabled) {
+            muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteX.png"))));
+            game.soundEnabled = false;
+        } else {
+            muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteSoundwaves.png"))));
+            game.soundEnabled = true;
+        }
+    }
+
+    private void addButton(String texturePath, int x, int y, final GameModeState gameModeState) {
+        Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
+        img.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                setGameMode(gameModeState);
                 startGame();
                 return true;
             }
         });
-        startGameButton.setPosition(200, 200);
-        st.addActor(startGameButton);
+        img.setPosition(x, y);
+        st.addActor(img);
     }
 
-    private Image createStaticTexture(String texturePath, int x, int y, Stage st) {
+    private Image createStaticTexture(String texturePath, int x, int y) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.setPosition(x, y);
         return img;
+    }
+
+    private void setGameMode(GameModeState gameModeState) {
+        game.gameModeState = gameModeState;
     }
 
     private void startGame() {
