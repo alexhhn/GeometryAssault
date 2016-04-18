@@ -35,7 +35,6 @@ public class StartScreen implements Screen {
         startGameButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("GGGGGG");
                 startGame();
                 return true;
             }
@@ -46,46 +45,27 @@ public class StartScreen implements Screen {
 
     private Image createStaticTexture(String texturePath, int x, int y, Stage st) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-//        img.setSize(GeometryAssault.WIDTH,GeometryAssault.HEIGHT);
         img.setPosition(x, y);
         return img;
     }
 
     private void startGame() {
-        System.out.println("hhhhhh");
         game.setScreen(new PlayScreen(game));
     }
 
     @Override
     public void show() {
-        System.out.println("show start " + st);
         Gdx.input.setInputProcessor(st);
-    }
-
-    private void update(float delta) {
-        handleInput();
-    }
-
-    private void handleInput() {
-        if (Gdx.input.justTouched()) {
-            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-        }
     }
 
     @Override
     public void render(float delta) {
-        update(delta);
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
-        game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
-        game.batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override
