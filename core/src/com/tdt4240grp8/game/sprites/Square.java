@@ -28,6 +28,10 @@ public class Square extends Fighter {
         goldValue = GOLD_VALUE;
         health = MAX_HEALTH;
         velocity = new Vector2(isGoingLeft ? MOVEMENT_SPEED : -MOVEMENT_SPEED, 0);
+        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("square-preview-face-right.png"));
+        if(!isGoingLeft){
+            textureRegion.flip(true,false);
+        }
     }
 
     @Override

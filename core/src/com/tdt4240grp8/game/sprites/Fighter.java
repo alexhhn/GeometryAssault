@@ -35,8 +35,13 @@ public abstract class Fighter extends GameObject {
             currentAttackCooldown = 0;
         }
     }
+    public TextureRegion getProductionImage(){
+        return textureRegion;
+    }
 
-    public abstract int getMaxHealth();
+
+
+        public abstract int getMaxHealth();
 
     public void move(float delta) {
         Vector2 oldValue = position;
@@ -88,6 +93,8 @@ public abstract class Fighter extends GameObject {
     public Texture getTexture() {
         return texture;
     }
+
+
 
     public Rectangle getBounds() {
         return bounds;

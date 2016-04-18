@@ -2,6 +2,8 @@ package com.tdt4240grp8.game.sprites;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.tdt4240grp8.game.managers.TextureManager;
 
 public class Triangle extends Fighter {
@@ -27,11 +29,16 @@ public class Triangle extends Fighter {
         goldValue = GOLD_VALUE;
         health = MAX_HEALTH;
         velocity = new Vector2(isGoingLeft ? MOVEMENT_SPEED : -MOVEMENT_SPEED, 0);
+        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("triangle-preview-face-right.png"));
+        if(!isGoingLeft){
+            textureRegion.flip(true,false);
+        }
     }
 
     @Override
     public int getMaxHealth() {
         return MAX_HEALTH;
     }
+
 
 }
