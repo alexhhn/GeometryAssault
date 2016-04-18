@@ -1,7 +1,9 @@
 package com.tdt4240grp8.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tdt4240grp8.game.screens.StartScreen;
 import com.tdt4240grp8.game.sounds.SoundManager;
@@ -22,14 +24,13 @@ public class GeometryAssault extends Game {
 	public SpriteBatch batch;
 	public GameModeState gameModeState;
 	public static boolean soundEnabled;
+	public static Sound music;
 
-
-
-	private Music music;
 
 	@Override
 	public void create () {
 		soundEnabled = true;
+		music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
 		batch = new SpriteBatch();
 		setScreen(new StartScreen(this));
 		gameModeState = new HypersonicState();

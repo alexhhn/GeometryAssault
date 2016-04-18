@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.async.ThreadUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.GeometryAssault;
@@ -54,7 +56,6 @@ public class PlayScreen implements Screen{
             goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4, previewImageSize = 50,
             progressBarYPos = hudYPos + 13, previewImageYPos = progressBarYPos - 8;
 
-    private Sound music;
     private Sound punch;
     private Sound death;
 
@@ -81,9 +82,9 @@ public class PlayScreen implements Screen{
         pauseBtn.setSize(50,50);
         quitBtn.setSize(50,50);
 
-        pauseBtn.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() -100);
-        resumeBtn.setPosition(Gdx.graphics.getWidth()/2 - 50,Gdx.graphics.getHeight() -100);
-        quitBtn.setPosition(Gdx.graphics.getWidth()/2 + 50,Gdx.graphics.getHeight()-100);
+        pauseBtn.setPosition(GeometryAssault.WIDTH/2,GeometryAssault.HEIGHT -100);
+        resumeBtn.setPosition(GeometryAssault.WIDTH/2 - 50,GeometryAssault.HEIGHT -100);
+        quitBtn.setPosition(GeometryAssault.WIDTH/2 + 50,GeometryAssault.HEIGHT-100);
 
         resumeBtn.addListener(new ClickListener(){
             @Override
@@ -129,22 +130,25 @@ public class PlayScreen implements Screen{
     }
 
 
-    public PlayScreen(GeometryAssault game) {
+    public PlayScreen(GeometryAssault game)  {
         this.game = game;
         player1 = new Player(true);
         player2 = new Player(false);
 
         //Get rid of old music
-        SoundManager.sharedInstance.muteMusic();
+//        SoundManager.sharedInstance.muteMusic();
 
         shapeRenderer = new ShapeRenderer();
 
-        if(GeometryAssault.soundEnabled) {
-            music = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
+
+//        SoundManager.sharedInstance.put(id, music);
+
+
+        if(game.soundEnabled) {
+            float delay = 3; // seconds
+            GeometryAssault.music.play();
             punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
             death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
-            long id = music.play();
-            SoundManager.sharedInstance.put(id, music);
         }
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
@@ -154,6 +158,7 @@ public class PlayScreen implements Screen{
         st = new Stage();
         st.setViewport(gamePort);
         Gdx.input.setInputProcessor(st);
+
 
         productionPreview1 = new ProductionPreview(goldXPos + 130 + previewImageSize , progressBarYPos, -previewImageSize - 1, 0, 1, 0.01f, false, st, player1);
         productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 480, progressBarYPos, 151, 0, 1, 0.01f, false, st, player2);
@@ -368,19 +373,16 @@ public class PlayScreen implements Screen{
     public void render(float delta) {
         //pause
         //mute music
-        if(Gdx.input.isKeyPressed(Input.Keys.M)){
-            GeometryAssault.soundEnabled = false;
-            SoundManager.sharedInstance.muteMusic();
-        }
+//        if(Gdx.input.isKeyPressed(Input.Keys.M)){
+//            GeometryAssault.soundEnabled = false;
+//            SoundManager.sharedInstance.muteMusic();
+//        }
 
         //enable music
         if(Gdx.input.isKeyPressed(Input.Keys.E)){
             //Get rid of old music before playing new music.
             SoundManager.sharedInstance.muteMusic();
-
             GeometryAssault.soundEnabled = true;
-            long id = music.play();
-            SoundManager.sharedInstance.put(id,music);
         }
 
         switch (state){
@@ -398,9 +400,8 @@ public class PlayScreen implements Screen{
         }
 
 //
-//        Gdx.gl.glClearColor(0, 0, 0, 0);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
