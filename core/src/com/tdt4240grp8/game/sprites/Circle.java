@@ -16,7 +16,6 @@ public class Circle extends Fighter {
 
     public Circle(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-
         if(isGoingLeft){
             texture = TextureManager.getInstance().getTexture("circle-fighter-face-right.png");
         }else{
@@ -35,6 +34,5 @@ public class Circle extends Fighter {
     public int getMaxHealth() {
         return MAX_HEALTH;
     }
-
 
 }

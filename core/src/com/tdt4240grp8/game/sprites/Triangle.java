@@ -1,6 +1,5 @@
 package com.tdt4240grp8.game.sprites;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.managers.TextureManager;
@@ -20,7 +19,8 @@ public class Triangle extends Fighter {
             texture = TextureManager.getInstance().getTexture("triangle-fighter-face-right.png");
         }else{
             texture = TextureManager.getInstance().getTexture("triangle-fighter-face-left.png");
-        }        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
+        }
+        bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;
         attackCooldwn = ATTACK_COOLDOWN;

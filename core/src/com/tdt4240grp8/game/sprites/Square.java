@@ -16,17 +16,11 @@ public class Square extends Fighter {
 
     public Square(float x, float y, boolean isGoingLeft) {
         super(x, y, isGoingLeft);
-
         if(isGoingLeft){
             texture = TextureManager.getInstance().getTexture("square-fighter-face-right.png");
         }else{
             texture = TextureManager.getInstance().getTexture("square-fighter-face-left.png");
         }
-
-        //Uncomment for animation
-//        animation = new Animation(texture,6,5);
-//        bounds = new Rectangle(x, y, animation.getWidth(), animation.getHeight());
-
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         productionTime = PRODUCTION_TIME;
         attackDamage = ATTACK_DAMAGE;

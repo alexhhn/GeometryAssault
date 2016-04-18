@@ -49,7 +49,6 @@ public class GoldWidget extends Actor implements PlayerListener {
         return img;
     }
 
-
     @Override
     public void healthChanged(int oldValue, int newValue) {
 

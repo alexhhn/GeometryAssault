@@ -88,7 +88,6 @@ public class Player {
         return isGoingLeft;
     }
 
-
     public Core getCore() {
         return core;
     }

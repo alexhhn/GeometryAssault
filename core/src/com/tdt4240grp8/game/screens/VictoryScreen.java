@@ -1,6 +1,7 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,13 +30,13 @@ public class VictoryScreen implements Screen {
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
         st = new Stage();
         st.setViewport(gamePort);
-        Gdx.input.setInputProcessor(st);
         font = new BitmapFont();
     }
 
     @Override
     public void show() {
-
+        System.out.println("show start " + st);
+        Gdx.input.setInputProcessor(st);
     }
 
     public void handleInput() {

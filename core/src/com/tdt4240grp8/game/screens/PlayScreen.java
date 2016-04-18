@@ -1,12 +1,10 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +16,6 @@ import com.tdt4240grp8.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.sprites.Fighter;
 import com.tdt4240grp8.game.sprites.Player;
-import com.tdt4240grp8.game.sprites.Square;
 import com.tdt4240grp8.game.widgets.GoldWidget;
 import com.tdt4240grp8.game.widgets.HealthBar;
 import com.tdt4240grp8.game.widgets.HealthWidget;
@@ -55,16 +52,14 @@ public class PlayScreen implements Screen {
 
         st = new Stage();
         st.setViewport(gamePort);
-        Gdx.input.setInputProcessor(st);
-
-        productionPreview1 = new ProductionPreview(250, GeometryAssault.HEIGHT - 75, 150, 0, 1, 0.01f, false, st);
-        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 350, GeometryAssault.HEIGHT - 75, -80, 0, 1, 0.01f, false, st);
 
         goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5, -30, 1);
         goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5, -30, 1);
         healthWidget1 = new HealthWidget(hudXPos,hudYPos, 6, 1);
         healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, hudYPos, 3, 1);
-        
+        productionPreview1 = new ProductionPreview(250, GeometryAssault.HEIGHT - 75, 150, 0, 1, 0.01f, false, st);
+        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 350, GeometryAssault.HEIGHT - 75, -80, 0, 1, 0.01f, false, st);
+
         st.addActor(createStaticTexture("bg.png",0,0,st));
         st.addActor(createStaticTexture("bottomBanner.png",0,0,st));
 
@@ -97,7 +92,7 @@ public class PlayScreen implements Screen {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Fighter createdFighter = player.addFighter(fighter);
                 if (createdFighter != null) {
                     HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
@@ -123,7 +118,8 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
+        System.out.println("show play " + st);
+        Gdx.input.setInputProcessor(st);
     }
 
     public void handleInput() {
