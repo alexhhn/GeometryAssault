@@ -210,7 +210,7 @@ public class PlayScreen implements Screen{
                     if (createdFighter != null) {
                         HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
                         createdFighter.addFighterListener(healthBar);
-                        player.addGold(-100);
+                        player.addGold(-createdFighter.getProductionCost());
                         st.addActor(healthBar);
 
                         if (player == player1){
@@ -221,7 +221,6 @@ public class PlayScreen implements Screen{
                         return true;
                     }
                 }
-
                 return false;
             }
         });

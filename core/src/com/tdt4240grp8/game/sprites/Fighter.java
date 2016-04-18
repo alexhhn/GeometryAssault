@@ -18,6 +18,7 @@ public abstract class Fighter extends GameObject {
     protected float attackCooldwn;
     protected float productionTime;
     protected int goldValue;
+    protected int productionCost;
     protected TextureRegion textureRegion;
     protected Animation animation;
 
@@ -85,6 +86,10 @@ public abstract class Fighter extends GameObject {
     }
 
     public int getGoldValue() { return goldValue; }
+
+    public int getProductionCost() {
+        return productionCost;
+    }
 
     public Vector2 getPosition() {
         return position;
