@@ -23,6 +23,7 @@ public class HealthBar extends ProgressBar implements FighterListener {
     @Override
     public void healthChanged(int oldValue, int newValue, int maxValue) {
         setValue((float) newValue / (float) maxValue);
+        toFront();
         if (getValue() == 0f) {
             remove();
         }
