@@ -19,12 +19,16 @@ import com.tdt4240grp8.game.states.HypersonicState;
 import com.tdt4240grp8.game.states.NormalState;
 import com.tdt4240grp8.game.states.WealthyState;
 
+/**
+ * The start menu screen
+ */
 public class StartScreen implements Screen {
 
     private GeometryAssault game;
     private Stage st;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
+
     private Image muteButton;
 
     public StartScreen(GeometryAssault game) {
@@ -36,6 +40,7 @@ public class StartScreen implements Screen {
 
         st = new Stage();
         st.setViewport(gamePort);
+
         st.addActor(createStaticTexture("bg.png", 0, 0));
         st.addActor(createStaticTexture("GA-title.png", 400, 500));
         st.addActor(createStaticTexture("modeselect.png", 500, 400));

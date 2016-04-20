@@ -25,7 +25,6 @@ public class GeometryAssault extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new StartScreen(this));
-		gameModeState = new HypersonicState();
 	}
 
 	@Override
