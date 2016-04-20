@@ -30,12 +30,24 @@ public class VictoryScreen implements Screen {
         st = new Stage();
         st.setViewport(gamePort);
         st.addActor(createStaticTexture("bg.png", 0, 0, st));
-        st.addActor(createStaticTexture("press2return.png",GeometryAssault.WIDTH/2-175,GeometryAssault.HEIGHT / 2 - 100,st ));
+        //st.addActor(createStaticTexture("press2return.png",GeometryAssault.WIDTH/2-175,GeometryAssault.HEIGHT / 2,st ));
+        st.addActor(createStaticTexture("bottomBanner.png", 0, -50, st));
+        st.addActor(createStaticTexture("return-menu.png", GeometryAssault.WIDTH/2-210, 400,st));
 
         if (winner){
-            st.addActor(createStaticTexture("play2win.png", 175, 300, st));
+            st.addActor(createStaticTexture("play2win.png", 175, 500, st));
+            st.addActor(createStaticTexture("happy-triangle.png", 850, 226, st));
+            st.addActor(createStaticTexture("happy-circle.png", 950, 225, st));
+            st.addActor(createStaticTexture("happy-square.png", 750, 227, st));
+            st.addActor(createStaticTexture("devil-face-right-dead.png", 25, 183, st));//done
+            st.addActor(createStaticTexture("happy-devil-tail-right.png", GeometryAssault.WIDTH-225, 202, st));
         }else{
-            st.addActor(createStaticTexture("play1win.png", 175, 300, st));
+            st.addActor(createStaticTexture("play1win.png", 175, 500, st));
+            st.addActor(createStaticTexture("happy-triangle.png", 300, 226, st));
+            st.addActor(createStaticTexture("happy-circle.png", 200, 225, st));
+            st.addActor(createStaticTexture("happy-square.png", 400, 227, st));
+            st.addActor(createStaticTexture("devil-face-left-dead.png", GeometryAssault.WIDTH-275, 183, st));
+            st.addActor(createStaticTexture("happy-devil-tail-left.png", 15, 202, st));
         }
     }
 
