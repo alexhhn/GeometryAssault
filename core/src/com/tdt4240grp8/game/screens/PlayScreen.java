@@ -134,6 +134,7 @@ public class PlayScreen implements Screen{
                         if (player == player1){
                             st.getActors().get(6).setVisible(true);
                         } else{
+                            
                             st.getActors().get(8).setVisible(true);
                         }
                         return true;

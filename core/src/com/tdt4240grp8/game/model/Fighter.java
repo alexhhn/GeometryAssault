@@ -62,7 +62,7 @@ public abstract class Fighter extends GameObject {
      */
     public void move(float delta) {
         Vector2 oldValue = position;
-        position.x += velocity.x * delta;
+        position.x += velocity.x * delta;;
         bounds.x += velocity.x * delta;
         for (FighterListener fighterListener : fighterListeners) {
             fighterListener.positionChanged(oldValue, position);
