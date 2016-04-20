@@ -67,18 +67,18 @@ public class PlayScreen implements Screen{
     public void createMenuButtons(){
         resumeBtn = new Image(TextureManager.getInstance().getTexture("resume.png"));
         pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.png"));
-        quitBtn = new Image(TextureManager.getInstance().getTexture("stop.png"));
+        quitBtn = new Image(TextureManager.getInstance().getTexture("quit.png"));
 
         resumeBtn.setVisible(false);
         quitBtn.setVisible(false);
 
-        resumeBtn.setSize(50,50);
-        pauseBtn.setSize(50,50);
-        quitBtn.setSize(50,50);
+        resumeBtn.setSize(200,80);
+        pauseBtn.setSize(200,80);
+        quitBtn.setSize(200,80);
 
-        pauseBtn.setPosition(GeometryAssault.WIDTH/2,GeometryAssault.HEIGHT -100);
-        resumeBtn.setPosition(GeometryAssault.WIDTH/2 - 50,GeometryAssault.HEIGHT -100);
-        quitBtn.setPosition(GeometryAssault.WIDTH/2 + 50,GeometryAssault.HEIGHT-100);
+        pauseBtn.setPosition((GeometryAssault.WIDTH/2)-100,GeometryAssault.HEIGHT -100);
+        resumeBtn.setPosition((GeometryAssault.WIDTH/2) - 100,GeometryAssault.HEIGHT -100);
+        quitBtn.setPosition((GeometryAssault.WIDTH/2)-100 ,GeometryAssault.HEIGHT-200);
 
         resumeBtn.addListener(new ClickListener(){
             @Override
@@ -86,8 +86,8 @@ public class PlayScreen implements Screen{
                 if (state == State.PAUSE){
                     setGameState(State.RUN);
                     resumeBtn.setVisible(false);
-                    quitBtn.setVisible(false);
                     pauseBtn.setVisible(true);
+                    quitBtn.setVisible(false);
                     return true;
                 }
                 return false;
