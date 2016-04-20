@@ -2,7 +2,7 @@ package com.tdt4240grp8.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

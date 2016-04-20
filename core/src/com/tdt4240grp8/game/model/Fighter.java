@@ -1,35 +1,49 @@
-package com.tdt4240grp8.game.sprites;
+package com.tdt4240grp8.game.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.observable.FighterListener;
-import com.tdt4240grp8.game.observable.PlayerListener;
 
 import java.util.ArrayList;
 
+/**
+ * The base class for all fighters
+ */
 public abstract class Fighter extends GameObject {
 
+    // how long until this fighter can attack again
     private float currentAttackCooldown;
 
+    // how far to update the fighter's position each frame
+    protected Vector2 velocity;
+    // current health
     protected int health;
+    // how much damage each attack does
     protected int attackDamage;
+    // how long the fighter has to wait between attacks
     protected float attackCooldwn;
+    // how long it takes to produce this fighter
     protected float productionTime;
+    // how much gold the other player is rewarded with for defeating this fighter
     protected int goldValue;
+    // how much it costs to put this fighter into production
     protected int productionCost;
+    // the preview image for when this fighter is in production
     protected TextureRegion textureRegion;
-    protected Animation animation;
 
     protected ArrayList<FighterListener> fighterListeners;
 
-    public Fighter(float x, float y, boolean isGoingLeft) {
+    public Fighter(float x, float y) {
         fighterListeners = new ArrayList<FighterListener>();
         position = new Vector2(x, y);
         currentAttackCooldown = 0;
     }
 
+    /**
+     * Called every frame to update the attack cooldown
+     */
     public void update(float delta) {
         currentAttackCooldown -= delta;
         if (currentAttackCooldown < 0) {
@@ -40,10 +54,12 @@ public abstract class Fighter extends GameObject {
         return textureRegion;
     }
 
+    public abstract int getMaxHealth();
 
-
-        public abstract int getMaxHealth();
-
+    /**
+     * Called whenever the fighter is supposed to move
+     * (i.e. whenever there is no enemy in front of it)
+     */
     public void move(float delta) {
         Vector2 oldValue = position;
         position.x += velocity.x * delta;
@@ -81,10 +97,6 @@ public abstract class Fighter extends GameObject {
         return health <= 0;
     }
 
-    public int getHeath() {
-        return health;
-    }
-
     public int getGoldValue() { return goldValue; }
 
     public int getProductionCost() {
@@ -99,8 +111,6 @@ public abstract class Fighter extends GameObject {
         return texture;
     }
 
-
-
     public Rectangle getBounds() {
         return bounds;
     }
@@ -113,7 +123,4 @@ public abstract class Fighter extends GameObject {
         fighterListeners.remove(fighterListener);
     }
 
-    public Animation getAnimation() {
-        return animation;
-    }
 }

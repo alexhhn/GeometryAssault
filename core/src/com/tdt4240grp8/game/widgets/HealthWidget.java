@@ -7,15 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.observable.PlayerListener;
 import com.tdt4240grp8.game.screens.PlayScreen;
-import com.tdt4240grp8.game.sprites.Fighter;
-
+import com.tdt4240grp8.game.model.Fighter;
 
 /**
- * Created by Shark on 08/04/16.
+ * Displays the player health
  */
 public class HealthWidget extends Actor implements PlayerListener {
 
@@ -27,36 +26,38 @@ public class HealthWidget extends Actor implements PlayerListener {
     private BitmapFont healthFont;
     private  Image img;
 
-    private int xOffset;
-    private int xPos, yPos;
-
-    public HealthWidget(int xPos, int yPos, int xOffset, float scaleValue){
-        this.xOffset = xOffset;
-        health = GeometryAssault.PLAYER_START_HEALTHPOINT;
+    /**
+     * Constructor of the health widget
+     * @param xPos x position of the widget
+     * @param yPos y position of the widget
+     */
+    public HealthWidget(int xPos, int yPos){
+        health = GeometryAssault.PLAYER_START_HEALTHPOINTS;
 
         img = new Image(TextureManager.getInstance().getTexture("heart-icon.png"));
-        img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
+
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
 
         healthFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         healthFontParameter.size = 45;
         healthFont = generator.generateFont(healthFontParameter);
         healthFont.setColor(Color.valueOf("ff0000"));
-
-
-
     }
 
     public Image getImg() {
         return img;
     }
 
-    public void render(float delta, SpriteBatch batch) {
+    /**
+     * Called on every render frame
+     * Draws the health text to the screen
+     */
+    public void render(SpriteBatch batch) {
         if(health >= 10){
-            healthFont.draw(batch,  "" + health, img.getX() + xOffset, PlayScreen.hudTextYPos);
+            healthFont.draw(batch,  "" + health, img.getX() + 6, PlayScreen.hudTextYPos);
         }else{
-            healthFont.draw(batch,  "0" + health, img.getX() + xOffset, PlayScreen.hudTextYPos);
+            healthFont.draw(batch,  "0" + health, img.getX() + 6, PlayScreen.hudTextYPos);
         }
     }
 

@@ -1,40 +1,53 @@
-package com.tdt4240grp8.game.sprites;
+package com.tdt4240grp8.game.model;
 
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.observable.PlayerListener;
 import com.tdt4240grp8.game.screens.PlayScreen;
 
 import java.util.ArrayList;
 
+/**
+ * The main model class. Contains all game state information for a player.
+ */
 public class Player {
 
     public enum Fighters {
         SQUARE, TRIANGLE, CIRCLE
     }
 
-    private Core core;
+    // this player's core
+    private com.tdt4240grp8.game.model.Core core;
 
-    private ArrayList<Fighter> fighters;
+    // list of all fighters this player currently has
+    private ArrayList<com.tdt4240grp8.game.model.Fighter> fighters;
 
+    // all widgets listening to this player
     private ArrayList<PlayerListener> playerListeners;
 
-    private Fighter fighterInProduction;
+    // the current fighter in production
+    private com.tdt4240grp8.game.model.Fighter fighterInProduction;
+
+    // how long the fighter has been in production
     private float currentProductionTime;
 
     private int gold;
     private int health;
 
+    // indicates whether this player is on the left or right side of the screen
     private boolean isGoingLeft;
 
     public Player(boolean isGoingLeft) {
-        fighters = new ArrayList<Fighter>();
+        fighters = new ArrayList<com.tdt4240grp8.game.model.Fighter>();
         playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
-        core = new Core(isGoingLeft ?  0 : GeometryAssault.WIDTH - 200, PlayScreen.coreYPos, isGoingLeft);
-        health = GeometryAssault.PLAYER_START_HEALTHPOINT;
+        core = new com.tdt4240grp8.game.model.Core(isGoingLeft ?  0 : GeometryAssault.WIDTH - 200, PlayScreen.coreYPos, isGoingLeft);
+        health = GeometryAssault.PLAYER_START_HEALTHPOINTS;
         gold = GeometryAssault.PLAYER_START_GOLD;
     }
 
+    /**
+     * Called once every frame to update production time and check if the fighter in production is ready to spawn
+     */
     public void update(float delta) {
         if (fighterInProduction == null) {
             return;
@@ -46,7 +59,7 @@ public class Player {
         }
         if (currentProductionTime > fighterInProduction.productionTime) {
             fighters.add(fighterInProduction);
-            Fighter fighter = fighterInProduction;
+            com.tdt4240grp8.game.model.Fighter fighter = fighterInProduction;
             fighterInProduction = null;
             for (PlayerListener playerListener : playerListeners) {
                 playerListener.fighterInProductionChanged(fighter, null);
@@ -55,7 +68,13 @@ public class Player {
         }
     }
 
-    public Fighter addFighter(Fighters fighterType) {
+    /**
+     * Called whenever a player clicks on a button to create a fighter.
+     * If no figher is in production and the player has enough gold, send a new fighter to production.
+     * @param fighterType the type of fighter to create
+     * @return null if a fighter is already in production or the player doesn't have enough gold, otherwise return the fighter
+     */
+    public com.tdt4240grp8.game.model.Fighter addFighter(Fighters fighterType) {
         if (fighterInProduction != null) {
             return null;
         }
@@ -85,19 +104,15 @@ public class Player {
         return fighterInProduction;
     }
 
-    public void removeFighter(Fighter fighter) {
+    public void removeFighter(com.tdt4240grp8.game.model.Fighter fighter) {
         fighters.remove(fighter);
     }
 
-    public ArrayList<Fighter> getFighters() {
+    public ArrayList<com.tdt4240grp8.game.model.Fighter> getFighters() {
         return fighters;
     }
 
-    public boolean isGoingLeft() {
-        return isGoingLeft;
-    }
-
-    public Core getCore() {
+    public com.tdt4240grp8.game.model.Core getCore() {
         return core;
     }
 
@@ -127,14 +142,6 @@ public class Player {
 
     public void removePlayerListener(PlayerListener playerListener) {
         playerListeners.remove(playerListener);
-    }
-
-    public int getGold() {
-        return gold;
-    }
-
-    public int getHealth() {
-        return health;
     }
 
 }

@@ -7,16 +7,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.observable.PlayerListener;
 import com.tdt4240grp8.game.screens.PlayScreen;
-import com.tdt4240grp8.game.sprites.Fighter;
+import com.tdt4240grp8.game.model.Fighter;
 
 /**
- * Created by Shark on 08/04/16.
+ * Displays the player gold
  */
 public class GoldWidget extends Actor implements PlayerListener {
+
     private int gold;
 
     private FreeTypeFontGenerator generator;
@@ -24,14 +25,16 @@ public class GoldWidget extends Actor implements PlayerListener {
 
     private BitmapFont goldFont;
     private Image img;
-    private int xOffset;
 
-    public GoldWidget(int xPos, int yPos, int xOffset, float scaleValue) {
-        this.xOffset = xOffset;
+    /**
+     * Constructor of the gold widget
+     * @param xPos x position of the widget
+     * @param yPos y position of the widget
+     */
+    public GoldWidget(int xPos, int yPos) {
         gold = GeometryAssault.PLAYER_START_GOLD;
 
         img = new Image(TextureManager.getInstance().getTexture("gold-bar-icon.png"));
-        img.setScale(scaleValue);
         img.setPosition(xPos, yPos);
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Arvo-Bold.ttf"));
         goldFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -40,8 +43,12 @@ public class GoldWidget extends Actor implements PlayerListener {
         goldFont.setColor(Color.valueOf("f85900"));
     }
 
-    public void render(float delta, SpriteBatch batch){
-        goldFont.draw(batch,  "$" + gold, img.getX() + xOffset , PlayScreen.hudTextYPos);
+    /**
+     * Called on every render frame
+     * Draws the gold text to the screen
+     */
+    public void render(SpriteBatch batch){
+        goldFont.draw(batch,  "$" + gold, img.getX() - 30 , PlayScreen.hudTextYPos);
     }
 
 

@@ -1,5 +1,8 @@
 package com.tdt4240grp8.game.states;
 
+/**
+ * This is the normal game mode
+ */
 public class NormalState implements GameModeState {
 
     @Override

@@ -1,9 +1,7 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,11 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
-import com.tdt4240grp8.game.sounds.SoundManager;
-import com.tdt4240grp8.game.sprites.Fighter;
-import com.tdt4240grp8.game.sprites.Player;
+import com.tdt4240grp8.game.managers.SoundManager;
+import com.tdt4240grp8.game.model.Fighter;
+import com.tdt4240grp8.game.model.Player;
 import com.tdt4240grp8.game.widgets.GoldWidget;
 import com.tdt4240grp8.game.widgets.HealthBar;
 import com.tdt4240grp8.game.widgets.HealthWidget;
@@ -50,100 +48,22 @@ public class PlayScreen implements Screen{
             goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4, previewImageSize = 50,
             progressBarYPos = hudYPos + 13, previewImageYPos = progressBarYPos - 8;
 
-    private Sound punch;
-    private Sound death;
+    private String deathSound = "punch.mp3";
 
-    public State state = State.RUN;
+    public Simulation simulation = Simulation.RUN;
 
-    public enum State
+    public enum Simulation
     {
         PAUSE,
         RUN,
-        RESUME,
-        STOPPED
     }
-
-
-    public void createMenuButtons(){
-        resumeBtn = new Image(TextureManager.getInstance().getTexture("play.jpg"));
-        pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.jpg"));
-        quitBtn = new Image(TextureManager.getInstance().getTexture("quit.png"));
-
-        resumeBtn.setVisible(false);
-        quitBtn.setVisible(false);
-
-        resumeBtn.setSize(50,50);
-        pauseBtn.setSize(50,50);
-        quitBtn.setSize(50,50);
-
-        pauseBtn.setPosition(GeometryAssault.WIDTH/2,GeometryAssault.HEIGHT -100);
-        resumeBtn.setPosition(GeometryAssault.WIDTH/2 - 50,GeometryAssault.HEIGHT -100);
-        quitBtn.setPosition(GeometryAssault.WIDTH/2 + 50,GeometryAssault.HEIGHT-100);
-
-        resumeBtn.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (state == State.PAUSE){
-                    setGameState(State.RUN);
-                    resumeBtn.setVisible(false);
-                    quitBtn.setVisible(false);
-                    pauseBtn.setVisible(true);
-                    return true;
-                }
-                return false;
-
-            }
-
-        });
-
-        pauseBtn.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(state == State.RUN){
-                    setGameState(State.PAUSE);
-                    pauseBtn.setVisible(false);
-                    resumeBtn.setVisible(true);
-                    quitBtn.setVisible(true);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        quitBtn.addListener(new ClickListener(){
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(state == State.PAUSE){
-                    game.setScreen(new VictoryScreen(game));
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
 
     public PlayScreen(GeometryAssault game)  {
         this.game = game;
         player1 = new Player(true);
         player2 = new Player(false);
 
-        //Get rid of old music
-//        SoundManager.sharedInstance.muteMusic();
-
         shapeRenderer = new ShapeRenderer();
-
-
-//        SoundManager.sharedInstance.put(id, music);
-
-
-        if(game.soundEnabled) {
-            float delay = 3; // seconds
-            GeometryAssault.music.play();
-            punch = Gdx.audio.newSound(Gdx.files.internal("punch.mp3"));
-            death = Gdx.audio.newSound(Gdx.files.internal("pacman-death.mp3"));
-        }
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
@@ -152,12 +72,12 @@ public class PlayScreen implements Screen{
         st = new Stage();
         st.setViewport(gamePort);
 
-        goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5, -30, 1);
-        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5, -30, 1);
-        healthWidget1 = new HealthWidget(hudXPos,hudYPos, 6, 1);
-        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, hudYPos, 3, 1);
-        productionPreview1 = new ProductionPreview(goldXPos + 130 + previewImageSize , progressBarYPos, -previewImageSize - 1, 0, 1, 0.01f, false, st, player1);
-        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 480, progressBarYPos, 151, 0, 1, 0.01f, false, st, player2);
+        goldWidget1 = new GoldWidget(goldXPos, hudYPos - 5);
+        goldWidget2 = new GoldWidget(GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5);
+        healthWidget1 = new HealthWidget(hudXPos,hudYPos);
+        healthWidget2 = new HealthWidget(GeometryAssault.WIDTH - 95, hudYPos);
+        productionPreview1 = new ProductionPreview(goldXPos + 130 + previewImageSize , progressBarYPos, -previewImageSize - 1);
+        productionPreview2 = new ProductionPreview(GeometryAssault.WIDTH - 480, progressBarYPos, 151);
 
         st.addActor(createStaticTexture("bg.png", 0, 0));
         st.addActor(createStaticTexture("bottomBanner.png", 0, 0));
@@ -171,10 +91,8 @@ public class PlayScreen implements Screen{
         st.addActor(productionPreview2);
         st.addActor(productionPreview2.getImg());
 
-
         st.getActors().get(6).setVisible(false);
         st.getActors().get(8).setVisible(false);
-
 
         player1.addPlayerListener(goldWidget1);
         player2.addPlayerListener(goldWidget2);
@@ -206,9 +124,9 @@ public class PlayScreen implements Screen{
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Fighter createdFighter = player.addFighter(fighter);
 
-                if (state == State.RUN) {
+                if (simulation == Simulation.RUN) {
                     if (createdFighter != null) {
-                        HealthBar healthBar = new HealthBar(0f, 1f, 0.01f, false);
+                        HealthBar healthBar = new HealthBar();
                         createdFighter.addFighterListener(healthBar);
                         player.addGold(-createdFighter.getProductionCost());
                         st.addActor(healthBar);
@@ -235,9 +153,68 @@ public class PlayScreen implements Screen{
         return img;
     }
 
+    public void createMenuButtons(){
+        resumeBtn = new Image(TextureManager.getInstance().getTexture("play.jpg"));
+        pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.jpg"));
+        quitBtn = new Image(TextureManager.getInstance().getTexture("quit.png"));
+
+        resumeBtn.setVisible(false);
+        quitBtn.setVisible(false);
+
+        resumeBtn.setSize(50,50);
+        pauseBtn.setSize(50,50);
+        quitBtn.setSize(50,50);
+
+        pauseBtn.setPosition(GeometryAssault.WIDTH/2,GeometryAssault.HEIGHT -100);
+        resumeBtn.setPosition(GeometryAssault.WIDTH/2 - 50,GeometryAssault.HEIGHT -100);
+        quitBtn.setPosition(GeometryAssault.WIDTH/2 + 50,GeometryAssault.HEIGHT-100);
+
+        resumeBtn.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (simulation == Simulation.PAUSE){
+                    setGameState(Simulation.RUN);
+                    resumeBtn.setVisible(false);
+                    quitBtn.setVisible(false);
+                    pauseBtn.setVisible(true);
+                    return true;
+                }
+                return false;
+            }
+
+        });
+
+        pauseBtn.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(simulation == Simulation.RUN){
+                    setGameState(Simulation.PAUSE);
+                    pauseBtn.setVisible(false);
+                    resumeBtn.setVisible(true);
+                    quitBtn.setVisible(true);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        quitBtn.addListener(new ClickListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(simulation == Simulation.PAUSE){
+                    game.setScreen(new VictoryScreen(game));
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(st);
+        SoundManager.getInstance().startMusic();
     }
 
     public void update(float delta) {
@@ -298,34 +275,28 @@ public class PlayScreen implements Screen{
         ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
             if (fighter.isDead()) {
-                if(GeometryAssault.soundEnabled){
-                    long id = punch.play();
-
-                }
-
+                SoundManager.getInstance().playSound(deathSound);
                 markedForDeath.add(fighter);
             }
         }
         for (Fighter fighter : markedForDeath) {
-            player2.addGold(fighter.getGoldValue()*game.gameModeState.getGoldMultiplier());
+            player2.addGold(fighter.getGoldValue()*game.getGameModeState().getGoldMultiplier());
             player1.removeFighter(fighter);
         }
 
         markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player2.getFighters()) {
             if (fighter.isDead()) {
-                if(GeometryAssault.soundEnabled){
-                    long id = punch.play();
-                }
+                SoundManager.getInstance().playSound(deathSound);
                 markedForDeath.add(fighter);
             }
         }
         for (Fighter fighter : markedForDeath) {
-            player1.addGold(fighter.getGoldValue()*game.gameModeState.getGoldMultiplier());
+            player1.addGold(fighter.getGoldValue()*game.getGameModeState().getGoldMultiplier());
             player2.removeFighter(fighter);
         }
         for (Fighter fighter : waitingToMove) {
-            fighter.move(delta*game.gameModeState.getSpeedMultiplier());
+            fighter.move(delta*game.getGameModeState().getSpeedMultiplier());
 
         }
         if (player1.isDead() || player2.isDead()) {
@@ -352,74 +323,34 @@ public class PlayScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        //pause
-        //mute music
-//        if(Gdx.input.isKeyPressed(Input.Keys.M)){
-//            GeometryAssault.soundEnabled = false;
-//            SoundManager.sharedInstance.muteMusic();
-//        }
-
-        //enable music
-        if(Gdx.input.isKeyPressed(Input.Keys.E)){
-            //Get rid of old music before playing new music.
-            SoundManager.sharedInstance.muteMusic();
-            GeometryAssault.soundEnabled = true;
+        if (simulation == Simulation.RUN) {
+            update(delta);
         }
 
-        switch (state){
-            case RUN:
-                update(delta);
-                break;
-            case PAUSE:
-
-                break;
-            case RESUME:
-                break;
-            default:
-                break;
-
-        }
-
-//
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
-        game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
-        game.batch.draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
-        game.batch.draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
-        goldWidget1.render(delta,game.batch);
-        goldWidget2.render(delta,game.batch);
-        healthWidget1.render(delta, game.batch);
-        healthWidget2.render(delta, game.batch);
+        game.getSpriteBatch().setProjectionMatrix(gamecam.combined);
+        game.getSpriteBatch().begin();
+        game.getSpriteBatch().draw(player1.getCore().getTexture(), player1.getCore().getPosition().x, player1.getCore().getPosition().y);
+        game.getSpriteBatch().draw(player2.getCore().getTexture(), player2.getCore().getPosition().x, player2.getCore().getPosition().y);
+        goldWidget1.render(game.getSpriteBatch());
+        goldWidget2.render(game.getSpriteBatch());
+        healthWidget1.render(game.getSpriteBatch());
+        healthWidget2.render(game.getSpriteBatch());
 
         for (Fighter fighter : player1.getFighters()) {
-            game.batch.draw(fighter.getTexture(),fighter.getPosition().x,fighter.getPosition().y);
+            game.getSpriteBatch().draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
         for (Fighter fighter : player2.getFighters()) {
-            game.batch.draw(fighter.getTexture(),fighter.getPosition().x,fighter.getPosition().y);
+            game.getSpriteBatch().draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
+        game.getSpriteBatch().end();
 
-
-
-        game.batch.end();
-
-
-        //Pause black screen with opacity 0.5
-        switch (state){
-            case RUN:
-                break;
-            case PAUSE:
-                updatePause(delta);
-                break;
-            case RESUME:
-                break;
-            default:
-                break;
-
+        if (simulation == Simulation.PAUSE) {
+            //Pause black screen with opacity 0.5
+            updatePause(delta);
         }
-
-
     }
 
     @Override
@@ -447,7 +378,7 @@ public class PlayScreen implements Screen{
 
     }
 
-    public void setGameState(State s){
-        this.state = s;
+    public void setGameState(Simulation s){
+        this.simulation = s;
     }
 }

@@ -1,9 +1,7 @@
 package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,19 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.tdt4240grp8.game.GeometryAssault;
+import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
-import com.tdt4240grp8.game.sprites.Fighter;
+import com.tdt4240grp8.game.managers.SoundManager;
 import com.tdt4240grp8.game.states.GameModeState;
 import com.tdt4240grp8.game.states.HypersonicState;
 import com.tdt4240grp8.game.states.NormalState;
 import com.tdt4240grp8.game.states.WealthyState;
-import com.tdt4240grp8.game.widgets.HealthBar;
-
-import javax.xml.soap.Text;
 
 public class StartScreen implements Screen {
 
@@ -63,12 +57,12 @@ public class StartScreen implements Screen {
     }
 
     private void toggleSound() {
-        if (game.soundEnabled) {
+        if (SoundManager.soundEnabled) {
             muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteX.png"))));
-            game.soundEnabled = false;
+            SoundManager.soundEnabled = false;
         } else {
             muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteSoundwaves.png"))));
-            game.soundEnabled = true;
+            SoundManager.soundEnabled = true;
         }
     }
 
@@ -93,7 +87,7 @@ public class StartScreen implements Screen {
     }
 
     private void setGameMode(GameModeState gameModeState) {
-        game.gameModeState = gameModeState;
+        game.setGameModeState(gameModeState);
     }
 
     private void startGame() {

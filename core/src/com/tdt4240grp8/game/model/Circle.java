@@ -1,26 +1,26 @@
-package com.tdt4240grp8.game.sprites;
+package com.tdt4240grp8.game.model;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.tdt4240grp8.game.managers.TextureManager;
 
-public class Square extends Fighter {
+public class Circle extends Fighter {
 
-    public static final float PRODUCTION_TIME = 2.0f;
+    public static final float PRODUCTION_TIME = 1.0f;
     public static final int ATTACK_DAMAGE = 1;
     public static final float ATTACK_COOLDOWN = 0.4f;
     public static final int GOLD_VALUE = 10;
     public static final int PRODUCTION_COST = 400;
-    public static final int MAX_HEALTH = 40;
-    public static final int MOVEMENT_SPEED = 50;
+    public static final int MAX_HEALTH = 10;
+    public static final int MOVEMENT_SPEED = 200;
 
-    public Square(float x, float y, boolean isGoingLeft) {
-        super(x, y, isGoingLeft);
+    public Circle(float x, float y, boolean isGoingLeft) {
+        super(x, y);
         if(isGoingLeft){
-            texture = TextureManager.getInstance().getTexture("square-fighter-face-right.png");
+            texture = TextureManager.getInstance().getTexture("circle-fighter-face-right.png");
         }else{
-            texture = TextureManager.getInstance().getTexture("square-fighter-face-left.png");
+            texture = TextureManager.getInstance().getTexture("circle-fighter-face-left.png");
         }
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
         productionTime = PRODUCTION_TIME;
@@ -30,7 +30,7 @@ public class Square extends Fighter {
         productionCost = PRODUCTION_COST;
         health = MAX_HEALTH;
         velocity = new Vector2(isGoingLeft ? MOVEMENT_SPEED : -MOVEMENT_SPEED, 0);
-        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("square-preview-face-right.png"));
+        textureRegion = new TextureRegion(TextureManager.getInstance().getTexture("circle-preview-face-right.png"));
         if(!isGoingLeft){
             textureRegion.flip(true,false);
         }

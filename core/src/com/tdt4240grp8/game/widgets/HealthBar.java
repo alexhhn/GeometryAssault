@@ -6,12 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.observable.FighterListener;
-import com.tdt4240grp8.game.sprites.Fighter;
 
+/**
+ * Displays a health bar over a fighter
+ */
 public class HealthBar extends ProgressBar implements FighterListener {
 
-    public HealthBar(float min, float max, float stepSize, boolean vertical) {
-        super(min, max, stepSize, vertical, new ProgressBarStyle());
+    /**
+     * Creates a LibGdx ProgressBar and makes it look like a health bar
+     */
+    public HealthBar() {
+        super(0f, 1f, 0.01f, false, new ProgressBarStyle());
         ProgressBarStyle style = new ProgressBarStyle();
         style.background = new TextureRegionDrawable(new TextureRegion(TextureManager.getInstance().getTexture("healthBarGreen.png")));
         style.knobAfter = new TextureRegionDrawable(new TextureRegion(TextureManager.getInstance().getTexture("healthBarRed.png")));
@@ -23,7 +28,7 @@ public class HealthBar extends ProgressBar implements FighterListener {
     @Override
     public void healthChanged(int oldValue, int newValue, int maxValue) {
         setValue((float) newValue / (float) maxValue);
-        toFront();
+        toFront(); // if several fighters are stacked, make sure to display the health bar of the one taking damage
         if (getValue() == 0f) {
             remove();
         }
