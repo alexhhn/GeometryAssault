@@ -2,6 +2,7 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,7 +35,7 @@ public class StartScreen implements Screen {
     public StartScreen(GeometryAssault game) {
         this.game = game;
         SoundManager.getInstance().stopMusic();
-        // sets up the camera and stage
+        // configures the camera and stage
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
@@ -50,7 +51,11 @@ public class StartScreen implements Screen {
         addButton("wealthyModeButton.png", 500, 250, new WealthyState());
         addButton("hypersonicModeButton.png", 800, 250, new HypersonicState());
 
-        muteButton = new Image(TextureManager.getInstance().getTexture("muteSoundwaves.png"));
+        if (SoundManager.soundEnabled) {
+            muteButton = new Image(TextureManager.getInstance().getTexture("muteSoundwaves.png"));
+        } else {
+            muteButton = new Image(TextureManager.getInstance().getTexture("muteX.png"));
+        }
         muteButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -116,6 +121,8 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
     }
 
