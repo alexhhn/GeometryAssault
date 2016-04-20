@@ -33,18 +33,19 @@ public class StartScreen implements Screen {
 
     public StartScreen(GeometryAssault game) {
         this.game = game;
-
+        SoundManager.getInstance().stopMusic();
+        // sets up the camera and stage
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
         st = new Stage();
         st.setViewport(gamePort);
-
+        // creates textures
         st.addActor(createStaticTexture("bg.png", 0, 0));
         st.addActor(createStaticTexture("GA-title.png", 400, 500));
         st.addActor(createStaticTexture("modeselect.png", 500, 400));
-
+        // creates buttons
         addButton("normalModeButton.png", 200, 250, new NormalState());
         addButton("wealthyModeButton.png", 500, 250, new WealthyState());
         addButton("hypersonicModeButton.png", 800, 250, new HypersonicState());
@@ -61,6 +62,9 @@ public class StartScreen implements Screen {
         st.addActor(muteButton);
     }
 
+    /**
+     * Called whenever the mute button is pressed, toggles between mute/unmute textures and enables/disables sound
+     */
     private void toggleSound() {
         if (SoundManager.soundEnabled) {
             muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteX.png"))));
@@ -71,6 +75,9 @@ public class StartScreen implements Screen {
         }
     }
 
+    /**
+     * Creates the buttons that let you start the game with a given game mode
+     */
     private void addButton(String texturePath, int x, int y, final GameModeState gameModeState) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.addListener(new ClickListener() {
@@ -95,6 +102,9 @@ public class StartScreen implements Screen {
         game.setGameModeState(gameModeState);
     }
 
+    /**
+     * Called whenever a button is pressed, starts the game
+     */
     private void startGame() {
         game.setScreen(new PlayScreen(game));
     }
