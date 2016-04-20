@@ -21,8 +21,10 @@ public class VictoryScreen implements Screen {
     private OrthographicCamera gamecam;
     private Viewport gamePort;
 
-    public VictoryScreen(GeometryAssault game) {
+
+    public VictoryScreen(GeometryAssault game, boolean winner) {
         this.game = game;
+
 
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
@@ -31,9 +33,13 @@ public class VictoryScreen implements Screen {
         st = new Stage();
         st.setViewport(gamePort);
         st.addActor(createStaticTexture("bg.png", 0, 0, st));
+        st.addActor(createStaticTexture("press2return.png",GeometryAssault.WIDTH/2-175,GeometryAssault.HEIGHT / 2 - 100,st ));
 
-        st.addActor(createStaticTexture("play1win.png", 0, 0, st));
-        st.addActor(createStaticTexture("play2win.png", 175, 300, st));
+        if (winner){
+            st.addActor(createStaticTexture("play2win.png", 175, 300, st));
+        }else{
+            st.addActor(createStaticTexture("play1win.png", 175, 300, st));
+        }
     }
 
     private Image createStaticTexture(String texturePath, int x, int y, Stage st) {

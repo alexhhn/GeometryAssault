@@ -115,7 +115,7 @@ public class PlayScreen implements Screen{
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(state == State.PAUSE){
-                    game.setScreen(new VictoryScreen(game));
+                    game.setScreen(new StartScreen(game));
                     return true;
                 }
                 return false;
@@ -328,9 +328,15 @@ public class PlayScreen implements Screen{
             fighter.move(delta*game.gameModeState.getSpeedMultiplier());
 
         }
-        if (player1.isDead() || player2.isDead()) {
-            game.setScreen(new VictoryScreen(game));
+        if (player1.isDead() ) {
+           game.setScreen(new VictoryScreen(game,true));
         }
+        if (player2.isDead() ) {
+            game.setScreen(new VictoryScreen(game,false));
+        }
+
+
+
     }
 
     private boolean collides(Rectangle r1, Rectangle r2) {
