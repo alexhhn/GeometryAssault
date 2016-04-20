@@ -18,6 +18,7 @@ public abstract class Fighter extends GameObject {
     protected float attackCooldwn;
     protected float productionTime;
     protected int goldValue;
+    protected int productionCost;
     protected TextureRegion textureRegion;
     protected Animation animation;
 
@@ -35,8 +36,13 @@ public abstract class Fighter extends GameObject {
             currentAttackCooldown = 0;
         }
     }
+    public TextureRegion getProductionImage(){
+        return textureRegion;
+    }
 
-    public abstract int getMaxHealth();
+
+
+        public abstract int getMaxHealth();
 
     public void move(float delta) {
         Vector2 oldValue = position;
@@ -81,6 +87,10 @@ public abstract class Fighter extends GameObject {
 
     public int getGoldValue() { return goldValue; }
 
+    public int getProductionCost() {
+        return productionCost;
+    }
+
     public Vector2 getPosition() {
         return position;
     }
@@ -88,6 +98,8 @@ public abstract class Fighter extends GameObject {
     public Texture getTexture() {
         return texture;
     }
+
+
 
     public Rectangle getBounds() {
         return bounds;

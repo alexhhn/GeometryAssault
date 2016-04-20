@@ -61,12 +61,21 @@ public class Player {
         }
         switch (fighterType) {
             case SQUARE:
+                if (gold < Square.PRODUCTION_COST) {
+                    return null;
+                }
                 fighterInProduction = new Square(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
             case TRIANGLE:
+                if (gold < Triangle.PRODUCTION_COST) {
+                    return null;
+                }
                 fighterInProduction = new Triangle(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
             case CIRCLE:
+                if (gold < Circle.PRODUCTION_COST) {
+                    return null;
+                }
                 fighterInProduction = new Circle(core.getPosition().x, PlayScreen.fighterYPos, isGoingLeft);
                 break;
         }
@@ -87,7 +96,6 @@ public class Player {
     public boolean isGoingLeft() {
         return isGoingLeft;
     }
-
 
     public Core getCore() {
         return core;
