@@ -28,6 +28,9 @@ public class VictoryScreen implements Screen {
         st = new Stage();
         st.setViewport(gamePort);
         st.addActor(createStaticTexture("bg.png", 0, 0, st));
+
+        st.addActor(createStaticTexture("play1win.png", 0, 0, st));
+        st.addActor(createStaticTexture("play2win.png", 175, 300, st));
     }
 
     private Image createStaticTexture(String texturePath, int x, int y, Stage st) {
