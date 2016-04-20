@@ -65,9 +65,9 @@ public class PlayScreen implements Screen{
 
 
     public void createMenuButtons(){
-        resumeBtn = new Image(TextureManager.getInstance().getTexture("play.jpg"));
-        pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.jpg"));
-        quitBtn = new Image(TextureManager.getInstance().getTexture("quit.png"));
+        resumeBtn = new Image(TextureManager.getInstance().getTexture("resume.png"));
+        pauseBtn = new Image(TextureManager.getInstance().getTexture("pause.png"));
+        quitBtn = new Image(TextureManager.getInstance().getTexture("stop.png"));
 
         resumeBtn.setVisible(false);
         quitBtn.setVisible(false);
