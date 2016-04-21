@@ -2,6 +2,7 @@ package com.tdt4240grp8.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,23 +34,28 @@ public class StartScreen implements Screen {
 
     public StartScreen(GeometryAssault game) {
         this.game = game;
-
+        SoundManager.getInstance().stopMusic();
+        // configures the camera and stage
         gamecam = new OrthographicCamera(GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         gamecam.position.set(GeometryAssault.WIDTH / 2f, GeometryAssault.HEIGHT / 2f, 0);
         gamePort = new FitViewport(GeometryAssault.WIDTH, GeometryAssault.HEIGHT, gamecam);
 
         st = new Stage();
         st.setViewport(gamePort);
-
+        // creates textures
         st.addActor(createStaticTexture("bg.png", 0, 0));
         st.addActor(createStaticTexture("GA-title.png", 400, 500));
         st.addActor(createStaticTexture("modeselect.png", 500, 400));
-
+        // creates buttons
         addButton("normalModeButton.png", 200, 250, new NormalState());
         addButton("wealthyModeButton.png", 500, 250, new WealthyState());
         addButton("hypersonicModeButton.png", 800, 250, new HypersonicState());
 
-        muteButton = new Image(TextureManager.getInstance().getTexture("muteSoundwaves.png"));
+        if (SoundManager.soundEnabled) {
+            muteButton = new Image(TextureManager.getInstance().getTexture("muteSoundwaves.png"));
+        } else {
+            muteButton = new Image(TextureManager.getInstance().getTexture("muteX.png"));
+        }
         muteButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -61,6 +67,9 @@ public class StartScreen implements Screen {
         st.addActor(muteButton);
     }
 
+    /**
+     * Called whenever the mute button is pressed, toggles between mute/unmute textures and enables/disables sound
+     */
     private void toggleSound() {
         if (SoundManager.soundEnabled) {
             muteButton.setDrawable(new SpriteDrawable(new Sprite(TextureManager.getInstance().getTexture("muteX.png"))));
@@ -71,6 +80,9 @@ public class StartScreen implements Screen {
         }
     }
 
+    /**
+     * Creates the buttons that let you start the game with a given game mode
+     */
     private void addButton(String texturePath, int x, int y, final GameModeState gameModeState) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.addListener(new ClickListener() {
@@ -95,6 +107,9 @@ public class StartScreen implements Screen {
         game.setGameModeState(gameModeState);
     }
 
+    /**
+     * Called whenever a button is pressed, starts the game
+     */
     private void startGame() {
         game.setScreen(new PlayScreen(game));
     }
@@ -106,6 +121,8 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
     }
 

@@ -7,13 +7,13 @@ import com.tdt4240grp8.game.managers.TextureManager;
 
 public class Circle extends Fighter {
 
-    public static final float PRODUCTION_TIME = 1.0f;
+    public static final float PRODUCTION_TIME = 0.8f;
     public static final int ATTACK_DAMAGE = 1;
-    public static final float ATTACK_COOLDOWN = 0.4f;
-    public static final int GOLD_VALUE = 10;
-    public static final int PRODUCTION_COST = 400;
-    public static final int MAX_HEALTH = 10;
-    public static final int MOVEMENT_SPEED = 200;
+    public static final float ATTACK_COOLDOWN = 0.2f;
+    public static final int GOLD_VALUE = 300;
+    public static final int PRODUCTION_COST = 300;
+    public static final int MAX_HEALTH = 8;
+    public static final int MOVEMENT_SPEED = 500;
 
     public Circle(float x, float y, boolean isGoingLeft) {
         super(x, y);

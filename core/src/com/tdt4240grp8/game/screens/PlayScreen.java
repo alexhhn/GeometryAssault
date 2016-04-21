@@ -25,19 +25,29 @@ import com.tdt4240grp8.game.widgets.ProductionPreview;
 
 import java.util.ArrayList;
 
+/**
+ * The main game screen
+ */
 public class PlayScreen implements Screen{
 
     private GeometryAssault game;
-
+    // a model class for each player
     private Player player1, player2;
+    // the stage that ui elements are drawn on
     private Stage st;
+    // the game camera
     private OrthographicCamera gamecam;
+    // viewport defines what area the camera should show
     private Viewport gamePort;
+    // widgets that display player gold
     private GoldWidget goldWidget1, goldWidget2;
+    // widgets that display player health
     private HealthWidget healthWidget1, healthWidget2;
+    // widgets that display the fighter currently in production
     private ProductionPreview productionPreview1, productionPreview2;
-
+    // renders the semi transparent black box in the pause screen
     private ShapeRenderer shapeRenderer;
+    // buttons
     private Image resumeBtn;
     private Image pauseBtn;
     private Image quitBtn;
@@ -48,8 +58,10 @@ public class PlayScreen implements Screen{
             goldXPos = hudXPos + 120, hudTextYPos = hudYPos - 4, previewImageSize = 50,
             progressBarYPos = hudYPos + 13, previewImageYPos = progressBarYPos - 8;
 
+    // filename for the death sound
     private String deathSound = "punch.mp3";
 
+    // defines whether the game simulation should run or not (if the game is paused or not)
     public Simulation simulation = Simulation.RUN;
 
     public enum Simulation
@@ -58,6 +70,9 @@ public class PlayScreen implements Screen{
         RUN,
     }
 
+    /**
+     * Contructor. Initializes everything, adds ui elements to the stage, creates buttons
+     */
     public PlayScreen(GeometryAssault game)  {
         this.game = game;
         player1 = new Player(true);
@@ -91,8 +106,8 @@ public class PlayScreen implements Screen{
         st.addActor(productionPreview2);
         st.addActor(productionPreview2.getImg());
 
-        st.getActors().get(6).setVisible(false);
-        st.getActors().get(8).setVisible(false);
+        productionPreview1.setVisible(false);
+        productionPreview2.setVisible(false);
 
         player1.addPlayerListener(goldWidget1);
         player2.addPlayerListener(goldWidget2);
@@ -116,15 +131,22 @@ public class PlayScreen implements Screen{
         createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
     }
 
-
+    /**
+     * Method for creating the buttons that spawn fighters
+     * @param player which player they belong to
+     * @param texturePath the path to the button texture
+     * @param x x position
+     * @param y y position
+     * @param fighter which type of fighter to create
+     * @return
+     */
     private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
         Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
         img.addListener(new ClickListener() {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Fighter createdFighter = player.addFighter(fighter);
-
                 if (simulation == Simulation.RUN) {
+                    Fighter createdFighter = player.addFighter(fighter); // will return null if a fighter is already in production, or if player has insufficient gold
                     if (createdFighter != null) {
                         HealthBar healthBar = new HealthBar();
                         createdFighter.addFighterListener(healthBar);
@@ -132,10 +154,10 @@ public class PlayScreen implements Screen{
                         st.addActor(healthBar);
 
                         if (player == player1){
-                            st.getActors().get(6).setVisible(true);
+                            productionPreview1.setVisible(true);
                         } else{
-                            
                             st.getActors().get(8).setVisible(true);
+                            productionPreview2.setVisible(true);
                         }
                         return true;
                     }
@@ -214,28 +236,39 @@ public class PlayScreen implements Screen{
         });
     }
 
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(st);
         SoundManager.getInstance().startMusic();
     }
 
+    /**
+     * Called at the start of every render frame, to update the game state
+     * @param delta time since the last call
+     */
     public void update(float delta) {
+        // updates the fighter currently in production for both players
         player1.update(delta);
         player2.update(delta);
+        // creates a new list of all fighters waiting to move
+        // any fighter that should move this frame is added to the list
+        // The actual movement happens when this has been determined for all fighters
         ArrayList<Fighter> waitingToMove = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
+            // updates the fighter's attack cooldown
             fighter.update(delta);
+            // keeps track of whether the fighter has collided with anything
             boolean collided = false;
+            // if fighter collides with the enemy core
             if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
                 collided = true;
-
+                // if fighter is able to attack
                 if (fighter.attackOffCooldown()) {
                     fighter.attack(player2);
                     fighter.resetAttackCooldown();
                 }
             }
+            // checks if fighter collides with an enemy fighter
             for (Fighter fighter2 : player2.getFighters()) {
                 if (collides(fighter.getBounds(), fighter2.getBounds())) {
                     collided = true;
@@ -247,10 +280,12 @@ public class PlayScreen implements Screen{
                     break;
                 }
             }
+            // if the fighetr has not collided with anything yet, add it to the move-list
             if (!collided) {
                 waitingToMove.add(fighter);
             }
         }
+        // same as above, now for player 2
         for (Fighter fighter : player2.getFighters()) {
             fighter.update(delta);
             boolean collided = false;
@@ -276,18 +311,23 @@ public class PlayScreen implements Screen{
                 waitingToMove.add(fighter);
             }
         }
+        // creates a new list of all fighters that are going to die
+        // any fighter that should die this frame is added to the list
+        // The actual dying happens when this has been determined for all fighters
         ArrayList<Fighter> markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player1.getFighters()) {
+            // if a fighter dies, play a sound and add it to the list
             if (fighter.isDead()) {
                 SoundManager.getInstance().playSound(deathSound);
                 markedForDeath.add(fighter);
             }
         }
+        // goes through the markedForDeath list, adding gold to the other player and removing the fighter
         for (Fighter fighter : markedForDeath) {
             player2.addGold(fighter.getGoldValue()*game.getGameModeState().getGoldMultiplier());
             player1.removeFighter(fighter);
         }
-
+        // same as above, now for player 2
         markedForDeath = new ArrayList<Fighter>();
         for (Fighter fighter : player2.getFighters()) {
             if (fighter.isDead()) {
@@ -299,10 +339,12 @@ public class PlayScreen implements Screen{
             player1.addGold(fighter.getGoldValue()*game.getGameModeState().getGoldMultiplier());
             player2.removeFighter(fighter);
         }
+        // move the fighters waiting to move
         for (Fighter fighter : waitingToMove) {
             fighter.move(delta*game.getGameModeState().getSpeedMultiplier());
 
         }
+        // check if one of the players are dead
         if (player1.isDead() ) {
            game.setScreen(new VictoryScreen(game,true));
         }
@@ -314,12 +356,17 @@ public class PlayScreen implements Screen{
 
     }
 
+    /**
+     * Returns whether the bounds of one gameobject overlaps with the bounds of another
+     */
     private boolean collides(Rectangle r1, Rectangle r2) {
         return r1.overlaps(r2);
     }
 
-
-    public void updatePause(float delta){
+    /**
+     * Extra render method for when the game is paused
+     */
+    public void renderPause(){
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.setProjectionMatrix(gamecam.combined);
@@ -328,15 +375,22 @@ public class PlayScreen implements Screen{
         shapeRenderer.rect(0, 0, GeometryAssault.WIDTH, GeometryAssault.HEIGHT);
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        game.getSpriteBatch().begin();
+        resumeBtn.draw(game.getSpriteBatch(), 1);
+        quitBtn.draw(game.getSpriteBatch(), 1);
+        game.getSpriteBatch().end();
     }
 
-
+    /**
+     * Called every frame. Renders the screen
+     * @param delta time since the last call
+     */
     @Override
     public void render(float delta) {
         if (simulation == Simulation.RUN) {
             update(delta);
         }
-
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         st.draw();
@@ -356,10 +410,9 @@ public class PlayScreen implements Screen{
             game.getSpriteBatch().draw(fighter.getTexture(), fighter.getPosition().x, fighter.getPosition().y);
         }
         game.getSpriteBatch().end();
-
         if (simulation == Simulation.PAUSE) {
             //Pause black screen with opacity 0.5
-            updatePause(delta);
+            renderPause();
         }
     }
 
