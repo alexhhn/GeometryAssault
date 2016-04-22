@@ -22,16 +22,4 @@ public class Core extends GameObject {
         bounds = new Rectangle(x, y, texture.getWidth(), texture.getHeight());
     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
 }

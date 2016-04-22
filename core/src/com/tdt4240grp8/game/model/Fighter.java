@@ -105,18 +105,6 @@ public abstract class Fighter extends GameObject {
         return productionCost;
     }
 
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public Rectangle getBounds() {
-        return bounds;
-    }
-
     public void addFighterListener(FighterListener fighterListener) {
         fighterListeners.add(fighterListener);
     }

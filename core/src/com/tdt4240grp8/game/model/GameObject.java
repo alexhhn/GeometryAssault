@@ -13,4 +13,16 @@ public class GameObject {
     protected Rectangle bounds;
 
     protected Vector2 position;
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
 }

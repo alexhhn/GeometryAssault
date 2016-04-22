@@ -23,6 +23,7 @@ import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.managers.SoundManager;
 import com.tdt4240grp8.game.model.Circle;
 import com.tdt4240grp8.game.model.Fighter;
+import com.tdt4240grp8.game.model.GameObject;
 import com.tdt4240grp8.game.model.Player;
 import com.tdt4240grp8.game.model.Square;
 import com.tdt4240grp8.game.model.Triangle;
@@ -335,7 +336,7 @@ public class PlayScreen implements Screen{
             // keeps track of whether the fighter has collided with anything
             boolean collided = false;
             // if fighter collides with the enemy core
-            if (collides(fighter.getBounds(), player2.getCore().getBounds())) {
+            if (collides(fighter, player2.getCore())) {
                 collided = true;
                 // if fighter is able to attack
                 if (fighter.attackOffCooldown()) {
@@ -345,7 +346,7 @@ public class PlayScreen implements Screen{
             }
             // checks if fighter collides with an enemy fighter
             for (Fighter fighter2 : player2.getFighters()) {
-                if (collides(fighter.getBounds(), fighter2.getBounds())) {
+                if (collides(fighter, fighter2)) {
                     collided = true;
 
                     if (fighter.attackOffCooldown()) {
@@ -364,7 +365,7 @@ public class PlayScreen implements Screen{
         for (Fighter fighter : player2.getFighters()) {
             fighter.update(delta);
             boolean collided = false;
-            if (collides(fighter.getBounds(), player1.getCore().getBounds())) {
+            if (collides(fighter, player1.getCore())) {
                 collided = true;
                 if (fighter.attackOffCooldown()) {
                     fighter.attack(player1);
@@ -373,7 +374,7 @@ public class PlayScreen implements Screen{
 
             }
             for (Fighter fighter1 : player1.getFighters()) {
-                if (collides(fighter.getBounds(), fighter1.getBounds())) {
+                if (collides(fighter, fighter1)) {
                     collided = true;
                     if (fighter.attackOffCooldown()) {
                         fighter.attack(fighter1);
@@ -427,15 +428,13 @@ public class PlayScreen implements Screen{
             game.setScreen(new VictoryScreen(game,false));
         }
 
-
-
     }
 
     /**
      * Returns whether the bounds of one gameobject overlaps with the bounds of another
      */
-    private boolean collides(Rectangle r1, Rectangle r2) {
-        return r1.overlaps(r2);
+    private boolean collides(GameObject r1, GameObject r2) {
+        return r1.getBounds().overlaps(r2.getBounds());
     }
 
     /**
