@@ -200,7 +200,6 @@ public class PlayScreen implements Screen{
                             System.out.println(player.getGold());
 //                            System.out.println(createdFighter.getProductionCost());
                         } else{
-                            st.getActors().get(8).setVisible(true);
                             productionPreview2.setVisible(true);
                         }
                         return true;
@@ -217,10 +216,10 @@ public class PlayScreen implements Screen{
                     public void run() {
                         if (simulation == Simulation.RUN) {
                                 if (player == player1){
-                                    st.getActors().get(2).setColor(Color.WHITE);
+                                    goldWidget1.getImg().setColor(Color.WHITE);
                                     goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
                                 } else {
-                                    st.getActors().get(3).setColor(Color.WHITE);
+                                    goldWidget2.getImg().setColor(Color.WHITE);
                                     goldWidget2.getGoldFont().setColor(Color.valueOf("f85900"));
                                 }
 //                        SoundManager.getInstance().playSound(deathSound);
