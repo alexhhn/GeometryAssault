@@ -16,16 +16,16 @@ public class Player {
     }
 
     // this player's core
-    private com.tdt4240grp8.game.model.Core core;
+    private Core core;
 
     // list of all fighters this player currently has
-    private ArrayList<com.tdt4240grp8.game.model.Fighter> fighters;
+    private ArrayList<Fighter> fighters;
 
     // all widgets listening to this player
     private ArrayList<PlayerListener> playerListeners;
 
     // the current fighter in production
-    private com.tdt4240grp8.game.model.Fighter fighterInProduction;
+    private Fighter fighterInProduction;
 
     // how long the fighter has been in production
     private float currentProductionTime;
@@ -37,10 +37,10 @@ public class Player {
     private boolean isGoingLeft;
 
     public Player(boolean isGoingLeft) {
-        fighters = new ArrayList<com.tdt4240grp8.game.model.Fighter>();
+        fighters = new ArrayList<Fighter>();
         playerListeners = new ArrayList<PlayerListener>();
         this.isGoingLeft = isGoingLeft;
-        core = new com.tdt4240grp8.game.model.Core(isGoingLeft ?  0 : GeometryAssault.WIDTH - 200, PlayScreen.coreYPos, isGoingLeft);
+        core = new Core(isGoingLeft ?  0 : GeometryAssault.WIDTH - 200, PlayScreen.coreYPos, isGoingLeft);
         health = GeometryAssault.PLAYER_START_HEALTHPOINTS;
         gold = GeometryAssault.PLAYER_START_GOLD;
     }
@@ -59,7 +59,7 @@ public class Player {
         }
         if (currentProductionTime > fighterInProduction.productionTime) {
             fighters.add(fighterInProduction);
-            com.tdt4240grp8.game.model.Fighter fighter = fighterInProduction;
+            Fighter fighter = fighterInProduction;
             fighterInProduction = null;
             for (PlayerListener playerListener : playerListeners) {
                 playerListener.fighterInProductionChanged(fighter, null);
@@ -74,7 +74,7 @@ public class Player {
      * @param fighterType the type of fighter to create
      * @return null if a fighter is already in production or the player doesn't have enough gold, otherwise return the fighter
      */
-    public com.tdt4240grp8.game.model.Fighter addFighter(Fighters fighterType) {
+    public Fighter addFighter(Fighters fighterType) {
         if (fighterInProduction != null) {
             return null;
         }
@@ -104,15 +104,15 @@ public class Player {
         return fighterInProduction;
     }
 
-    public void removeFighter(com.tdt4240grp8.game.model.Fighter fighter) {
+    public void removeFighter(Fighter fighter) {
         fighters.remove(fighter);
     }
 
-    public ArrayList<com.tdt4240grp8.game.model.Fighter> getFighters() {
+    public ArrayList<Fighter> getFighters() {
         return fighters;
     }
 
-    public com.tdt4240grp8.game.model.Core getCore() {
+    public Core getCore() {
         return core;
     }
 
