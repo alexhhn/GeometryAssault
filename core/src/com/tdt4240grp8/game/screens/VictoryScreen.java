@@ -25,6 +25,7 @@ public class VictoryScreen implements Screen {
     private Viewport gamePort;
 
     private Image backToMenuButton;
+    private Image replayBtn;
 
 
     public VictoryScreen(GeometryAssault game, boolean winner) {
@@ -65,8 +66,20 @@ public class VictoryScreen implements Screen {
                 return true;
             }
         });
-        backToMenuButton.setPosition( GeometryAssault.WIDTH/2-210, 400);
+        replayBtn = new Image(TextureManager.getInstance().getTexture("replay.png"));
+        replayBtn.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                replay();
+                return true;
+            }
+        });
+
+
+        backToMenuButton.setPosition( GeometryAssault.WIDTH/2 - 50, 400);
+        replayBtn.setPosition(GeometryAssault.WIDTH/2 - 350,400);
         st.addActor(backToMenuButton);
+        st.addActor(replayBtn);
     }
 
     private Image createStaticTexture(String texturePath, int x, int y) {
@@ -81,6 +94,7 @@ public class VictoryScreen implements Screen {
     private void backToMenu() {
         game.setScreen(new StartScreen(game));
     }
+    private void replay(){ game.setScreen(new PlayScreen(game));}
 
     @Override
     public void show() {
