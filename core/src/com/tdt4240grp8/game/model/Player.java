@@ -144,4 +144,7 @@ public class Player {
         playerListeners.remove(playerListener);
     }
 
+    public int getGold() {
+        return gold;
+    }
 }

@@ -41,6 +41,8 @@ public abstract class Fighter extends GameObject {
         currentAttackCooldown = 0;
     }
 
+
+
     /**
      * Called every frame to update the attack cooldown
      */

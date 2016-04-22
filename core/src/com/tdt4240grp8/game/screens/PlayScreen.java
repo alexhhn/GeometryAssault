@@ -5,19 +5,27 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tdt4240grp8.game.game.GeometryAssault;
 import com.tdt4240grp8.game.managers.TextureManager;
 import com.tdt4240grp8.game.managers.SoundManager;
+import com.tdt4240grp8.game.model.Circle;
 import com.tdt4240grp8.game.model.Fighter;
 import com.tdt4240grp8.game.model.Player;
+import com.tdt4240grp8.game.model.Square;
+import com.tdt4240grp8.game.model.Triangle;
 import com.tdt4240grp8.game.widgets.GoldWidget;
 import com.tdt4240grp8.game.widgets.HealthBar;
 import com.tdt4240grp8.game.widgets.HealthWidget;
@@ -96,9 +104,13 @@ public class PlayScreen implements Screen{
 
         st.addActor(createStaticTexture("bg.png", 0, 0));
         st.addActor(createStaticTexture("bottomBanner.png", 0, 0));
-
         st.addActor(goldWidget1.getImg());
         st.addActor(goldWidget2.getImg());
+        st.addActor(createStaticTexture("no-gold.png",goldXPos, hudYPos - 5));
+        st.addActor(createStaticTexture("no-gold.png",GeometryAssault.WIDTH - goldXPos - heartIconHeight - heartIconHeight/2, hudYPos - 5));
+        st.getActors().get(4).setVisible(false);
+        st.getActors().get(5).setVisible(false);
+
         st.addActor(healthWidget1.getImg());
         st.addActor(healthWidget2.getImg());
         st.addActor(productionPreview1);
@@ -122,13 +134,13 @@ public class PlayScreen implements Screen{
         st.addActor(pauseBtn);
         st.addActor(quitBtn);
 
-        createButton(player1, "square-button.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
-        createButton(player1, "triangle-button.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
-        createButton(player1, "circle-button.png", buttonXpos + buttonWidth * 2 + 10, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player1, "square-button.png","square-button-tapped.png", buttonXpos, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player1, "triangle-button.png","triangle-button-tapped.png", buttonXpos + buttonWidth + 5, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player1, "circle-button.png", "circle-button-tapped.png",buttonXpos + buttonWidth * 2 + 10, buttonYPos, Player.Fighters.CIRCLE);
 
-        createButton(player2, "circle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
-        createButton(player2, "triangle-button-face-left.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
-        createButton(player2, "square-button-face-left.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
+        createButton(player2, "circle-button-face-left.png","circle-button-face-left-tapped.png", GeometryAssault.WIDTH - buttonWidth * 3 - 15, buttonYPos, Player.Fighters.CIRCLE);
+        createButton(player2, "triangle-button-face-left.png","triangle-button-face-left-tapped.png", GeometryAssault.WIDTH - buttonWidth * 2 - 10, buttonYPos, Player.Fighters.TRIANGLE);
+        createButton(player2, "square-button-face-left.png","square-button-face-left-tapped.png", GeometryAssault.WIDTH - buttonWidth - 5, buttonYPos, Player.Fighters.SQUARE);
     }
 
     /**
@@ -140,12 +152,42 @@ public class PlayScreen implements Screen{
      * @param fighter which type of fighter to create
      * @return
      */
-    private Image createButton(final Player player, String texturePath, int x, int y, final Player.Fighters fighter) {
-        Image img = new Image(TextureManager.getInstance().getTexture(texturePath));
-        img.addListener(new ClickListener() {
+    private ImageButton createButton(final Player player, String texturePath, String texturePath2, int x, int y, final Player.Fighters fighter) {
+        ImageButton imageButton = new ImageButton(new Image(TextureManager.getInstance().getTexture(texturePath)).getDrawable(),
+                new Image(TextureManager.getInstance().getTexture(texturePath2)).getDrawable()
+                );
+
+        imageButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if (simulation == Simulation.RUN) {
+                    int productionCost = 0;
+                    switch (fighter) {
+                        case SQUARE:
+                            productionCost = Square.PRODUCTION_COST;
+                            break;
+                        case TRIANGLE:
+                            productionCost = Triangle.PRODUCTION_COST;
+                            break;
+                        case CIRCLE:
+                            productionCost = Circle.PRODUCTION_COST;
+                            break;
+                    }
+                    if (player.getGold() < productionCost){
+                        if (player == player1){
+                            goldWidget1.getImg().setColor(255,0,0,.4f);
+                            goldWidget1.getGoldFont().setColor(Color.RED);
+                            st.getActors().get(4).setVisible(true);
+
+                        } else {
+                            goldWidget2.getImg().setColor(255,0,0,.4f);
+                            goldWidget2.getGoldFont().setColor(Color.RED);
+                            st.getActors().get(5).setVisible(true);
+
+                        }
+//                        SoundManager.getInstance().playSound(deathSound);
+                    }
+
                     Fighter createdFighter = player.addFighter(fighter); // will return null if a fighter is already in production, or if player has insufficient gold
                     if (createdFighter != null) {
                         HealthBar healthBar = new HealthBar();
@@ -155,6 +197,8 @@ public class PlayScreen implements Screen{
 
                         if (player == player1){
                             productionPreview1.setVisible(true);
+                            System.out.println(player.getGold());
+//                            System.out.println(createdFighter.getProductionCost());
                         } else{
                             st.getActors().get(8).setVisible(true);
                             productionPreview2.setVisible(true);
@@ -162,12 +206,41 @@ public class PlayScreen implements Screen{
                         return true;
                     }
                 }
-                return false;
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                float delay = .4f; // seconds
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        if (simulation == Simulation.RUN) {
+                                if (player == player1){
+                                    st.getActors().get(2).setColor(Color.WHITE);
+                                    goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
+                                } else {
+                                    st.getActors().get(3).setColor(Color.WHITE);
+                                    goldWidget2.getGoldFont().setColor(Color.valueOf("f85900"));
+                                }
+//                        SoundManager.getInstance().playSound(deathSound);
+                            st.getActors().get(2).setColor(Color.WHITE);
+                            goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
+                            st.getActors().get(4).setVisible(false);
+                            st.getActors().get(5).setVisible(false);
+
+                        }
+                    }
+                }, delay);
+
             }
         });
-        img.setPosition(x, y);
-        st.addActor(img);
-        return img;
+
+
+
+        imageButton.setPosition(x, y);
+        st.addActor(imageButton);
+        return imageButton;
     }
 
     private Image createStaticTexture(String texturePath, int x, int y){
@@ -250,6 +323,9 @@ public class PlayScreen implements Screen{
         // updates the fighter currently in production for both players
         player1.update(delta);
         player2.update(delta);
+
+
+
         // creates a new list of all fighters waiting to move
         // any fighter that should move this frame is added to the list
         // The actual movement happens when this has been determined for all fighters

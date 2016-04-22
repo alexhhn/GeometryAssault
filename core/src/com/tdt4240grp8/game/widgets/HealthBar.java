@@ -20,6 +20,7 @@ public class HealthBar extends ProgressBar implements FighterListener {
         ProgressBarStyle style = new ProgressBarStyle();
         style.background = new TextureRegionDrawable(new TextureRegion(TextureManager.getInstance().getTexture("HealthBar.png")));
         style.knobAfter = new TextureRegionDrawable(new TextureRegion(TextureManager.getInstance().getTexture("HealthBarKnob.png")));
+        setVisible(false);
         setStyle(style);
         setValue(1);
         setSize(100, 5);
@@ -36,6 +37,7 @@ public class HealthBar extends ProgressBar implements FighterListener {
 
     @Override
     public void positionChanged(Vector2 oldValue, Vector2 newValue) {
+        setVisible(true);
         setPosition(newValue.x, newValue.y + 120);
     }
 }

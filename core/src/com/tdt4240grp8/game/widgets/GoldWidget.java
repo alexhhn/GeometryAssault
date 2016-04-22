@@ -26,6 +26,14 @@ public class GoldWidget extends Actor implements PlayerListener {
     private BitmapFont goldFont;
     private Image img;
 
+    public BitmapFont getGoldFont() {
+        return goldFont;
+    }
+
+    public void setGoldFont(BitmapFont goldFont) {
+        this.goldFont = goldFont;
+    }
+
     /**
      * Constructor of the gold widget
      * @param xPos x position of the widget
@@ -43,6 +51,7 @@ public class GoldWidget extends Actor implements PlayerListener {
         goldFont.setColor(Color.valueOf("f85900"));
     }
 
+
     /**
      * Called on every render frame
      * Draws the gold text to the screen
@@ -54,6 +63,10 @@ public class GoldWidget extends Actor implements PlayerListener {
 
     public Image getImg(){
         return img;
+    }
+
+    public void setImg(Image img){
+        this.img = img;
     }
 
     @Override

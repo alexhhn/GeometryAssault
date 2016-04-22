@@ -9,7 +9,7 @@ public class GeometryAssault extends Game {
 
 	public static final int WIDTH = 1280;
 	public static final int HEIGHT = 720;
-	public static final int PLAYER_START_GOLD = 2000;
+	public static final int PLAYER_START_GOLD = 300;
 	public static final int PLAYER_START_HEALTHPOINTS = 100;
 	public static final String TITLE = "Geometry Assault";
 
