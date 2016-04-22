@@ -42,10 +42,12 @@ public class SoundManager {
     // If a sound is loaded for the first time, put it in the HashMap, then return it
     // If it has been loaded before (if it is in the HashMap), return the existing sound
     public void playSound(String path) {
-        if (sounds.get(path) == null) {
-            sounds.put(path, Gdx.audio.newSound(Gdx.files.internal(path)));
+        if(soundEnabled) {
+            if (sounds.get(path) == null) {
+                sounds.put(path, Gdx.audio.newSound(Gdx.files.internal(path)));
+            }
+            sounds.get(path).play();
         }
-        sounds.get(path).play();
     }
 
 }

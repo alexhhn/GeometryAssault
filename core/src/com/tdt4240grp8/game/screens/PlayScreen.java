@@ -68,6 +68,7 @@ public class PlayScreen implements Screen{
 
     // filename for the death sound
     private String deathSound = "punch.mp3";
+    private String noGoldSound = "gold.mp3";
 
     // defines whether the game simulation should run or not (if the game is paused or not)
     public Simulation simulation = Simulation.RUN;
@@ -185,7 +186,7 @@ public class PlayScreen implements Screen{
                             st.getActors().get(5).setVisible(true);
 
                         }
-//                        SoundManager.getInstance().playSound(deathSound);
+                        SoundManager.getInstance().playSound(noGoldSound);
                     }
 
                     Fighter createdFighter = player.addFighter(fighter); // will return null if a fighter is already in production, or if player has insufficient gold
