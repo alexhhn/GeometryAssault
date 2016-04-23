@@ -1,6 +1,9 @@
 package com.tdt4240grp8.game.screens;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,7 +39,7 @@ import java.util.ArrayList;
 /**
  * The main game screen
  */
-public class PlayScreen implements Screen{
+public class PlayScreen implements Screen, ApplicationListener,InputProcessor{
 
     private GeometryAssault game;
     // a model class for each player
@@ -71,6 +74,222 @@ public class PlayScreen implements Screen{
 
     // defines whether the game simulation should run or not (if the game is paused or not)
     public Simulation simulation = Simulation.RUN;
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.NUM_1){
+            if(player1.getGold() < Square.PRODUCTION_COST){
+                goldWidget1.getImg().setColor(255,0,0,.4f);
+                goldWidget1.getGoldFont().setColor(Color.RED);
+                st.getActors().get(4).setVisible(true);
+            }
+
+            Fighter createdFighter = player1.addFighter(Player.Fighters.SQUARE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player1.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview1.setVisible(true);
+            }
+        }
+
+        if(keycode == Input.Keys.NUM_2){
+            if(player1.getGold() < Triangle.PRODUCTION_COST){
+                goldWidget1.getImg().setColor(255,0,0,.4f);
+                goldWidget1.getGoldFont().setColor(Color.RED);
+                st.getActors().get(4).setVisible(true);
+            }
+            Fighter createdFighter = player1.addFighter(Player.Fighters.TRIANGLE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player1.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview1.setVisible(true);
+            }
+        }
+
+        if(keycode == Input.Keys.NUM_3){
+            if(player1.getGold() < Circle.PRODUCTION_COST){
+                goldWidget1.getImg().setColor(255,0,0,.4f);
+                goldWidget1.getGoldFont().setColor(Color.RED);
+                st.getActors().get(4).setVisible(true);
+            }
+            Fighter createdFighter = player1.addFighter(Player.Fighters.CIRCLE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player1.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview1.setVisible(true);
+            }
+        }
+
+        if(keycode == Input.Keys.LEFT){
+            if(player2.getGold() < Circle.PRODUCTION_COST){
+                goldWidget2.getImg().setColor(255,0,0,.4f);
+                goldWidget2.getGoldFont().setColor(Color.RED);
+                st.getActors().get(5).setVisible(true);
+            }
+            Fighter createdFighter = player2.addFighter(Player.Fighters.CIRCLE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player2.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview2.setVisible(true);
+            }
+        }
+
+        if(keycode == Input.Keys.DOWN){
+            if(player2.getGold() < Triangle.PRODUCTION_COST){
+                goldWidget2.getImg().setColor(255,0,0,.4f);
+                goldWidget2.getGoldFont().setColor(Color.RED);
+                st.getActors().get(5).setVisible(true);
+            }
+            Fighter createdFighter = player2.addFighter(Player.Fighters.TRIANGLE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player2.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview2.setVisible(true);
+            }
+        }
+
+        if(keycode == Input.Keys.RIGHT){
+            if(player2.getGold() < Square.PRODUCTION_COST){
+                goldWidget2.getImg().setColor(255,0,0,.4f);
+                goldWidget2.getGoldFont().setColor(Color.RED);
+                st.getActors().get(5).setVisible(true);
+            }
+            Fighter createdFighter = player2.addFighter(Player.Fighters.SQUARE); // will return null if a fighter is already in production, or if player has insufficient gold
+            if (createdFighter != null) {
+                HealthBar healthBar = new HealthBar();
+                createdFighter.addFighterListener(healthBar);
+                player2.addGold(-createdFighter.getProductionCost());
+                st.addActor(healthBar);
+                productionPreview2.setVisible(true);
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        float delay = .4f; // seconds
+        if(keycode == Input.Keys.NUM_1){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget1.getImg().setColor(Color.WHITE);
+                        goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(4).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        if(keycode == Input.Keys.NUM_2){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget1.getImg().setColor(Color.WHITE);
+                        goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(4).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        if(keycode == Input.Keys.NUM_3){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget1.getImg().setColor(Color.WHITE);
+                        goldWidget1.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(4).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        if(keycode == Input.Keys.LEFT){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget2.getImg().setColor(Color.WHITE);
+                        goldWidget2.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(5).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        if(keycode == Input.Keys.DOWN){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget2.getImg().setColor(Color.WHITE);
+                        goldWidget2.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(5).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        if(keycode == Input.Keys.RIGHT){
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    if (simulation == Simulation.RUN) {
+                        goldWidget2.getImg().setColor(Color.WHITE);
+                        goldWidget2.getGoldFont().setColor(Color.valueOf("f85900"));
+                        st.getActors().get(5).setVisible(false);
+                    }
+                }
+            }, delay);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 
     public enum Simulation
     {
@@ -310,9 +529,10 @@ public class PlayScreen implements Screen{
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(st);
+        Gdx.input.setInputProcessor(this);
         SoundManager.getInstance().startMusic();
     }
+
 
     /**
      * Called at the start of every render frame, to update the game state
@@ -322,7 +542,6 @@ public class PlayScreen implements Screen{
         // updates the fighter currently in production for both players
         player1.update(delta);
         player2.update(delta);
-
 
 
         // creates a new list of all fighters waiting to move
@@ -492,8 +711,18 @@ public class PlayScreen implements Screen{
     }
 
     @Override
+    public void create() {
+        Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
+    }
+
+    @Override
+    public void render() {
+
     }
 
     @Override
