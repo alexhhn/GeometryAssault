@@ -66,6 +66,7 @@ public class VictoryScreen implements Screen {
                 return true;
             }
         });
+        // the button for replaying
         replayBtn = new Image(TextureManager.getInstance().getTexture("replay.png"));
         replayBtn.addListener(new ClickListener() {
             @Override
