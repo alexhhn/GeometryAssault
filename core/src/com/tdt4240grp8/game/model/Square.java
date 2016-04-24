@@ -9,7 +9,7 @@ public class Square extends Fighter {
 
     public static final float PRODUCTION_TIME = 1.5f;
     public static final int ATTACK_DAMAGE = 2;
-    public static final float ATTACK_COOLDOWN = 0.4f;
+    public static final float ATTACK_COOLDOWN = 0.6f;
     public static final int GOLD_VALUE = 200;
     public static final int PRODUCTION_COST = 200;
     public static final int MAX_HEALTH = 40;
